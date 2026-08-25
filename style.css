@@ -1033,12 +1033,24 @@ canvas { display: block; max-width: 100%; width: 100%; height: auto; }
     .bg-dots::after { animation: none !important; }
     .combo-burst, .confetti-piece, .score-float { animation-duration: 0.01s !important; }
     .card, .screen, .countdown-overlay, .note-btn, .btn-action, .btn-start { animation: none !important; transition: none !important; }
+    .hub-game-card,
+    .hub-game-card::before,
+    .hub-game-card::after,
+    .hub-game-tag,
+    .illust-svg,
+    .hub-game-illust::after,
+    .hub-game-btn {
+        transition: none !important;
+        transform: none !important;
+        animation: none !important;
+    }
 }
 
 /* ===== iPad / Tablet (768-1024px) ===== */
 @media (min-width: 768px) and (max-width: 1024px) {
     body { padding: 2vh 24px; }
     .screen { max-width: 800px; }
+    #screen-hub.screen { max-width: min(1180px, 100%); }
     .note-btn { width: 82px; height: 100px; font-size: 2.1rem; }
     .note-btn.sharp, .note-btn.flat { width: 68px; height: 80px; }
     .note-row { gap: 6px; }
@@ -1393,6 +1405,8 @@ canvas { display: block; max-width: 100%; width: 100%; height: auto; }
     }
 }
 
+#screen-hub.screen { max-width: min(1180px, 100%); }
+
 /* Hub Game Grid — 創作工作室與遊戲 1–4 同排：寬螢幕用 5 欄 */
 .hub-games-grid {
     display: grid;
@@ -1417,7 +1431,6 @@ canvas { display: block; max-width: 100%; width: 100%; height: auto; }
     .hub-game-name { font-size: 0.95rem; padding: 0 12px; }
     .hub-game-desc { font-size: 0.74rem; line-height: 1.35; min-height: 2.7em; padding: 0 12px; }
     .hub-game-btn { width: calc(100% - 24px); margin: 10px 12px 0; padding: 9px 0; font-size: 0.84rem; }
-    .hub-game-tag { font-size: 0.625rem; padding: 3px 8px; top: 10px; left: 10px; }
 }
 @media (max-width: 480px) {
     .hub-games-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; max-width: 390px; }
@@ -1443,7 +1456,9 @@ canvas { display: block; max-width: 100%; width: 100%; height: auto; }
     padding: 0 0 18px;
     text-align: center;
     cursor: pointer;
-    border: 1.5px solid color-mix(in srgb, var(--hub-accent) 18%, transparent);
+    touch-action: manipulation;
+    border: 1.5px solid rgba(139, 102, 255, 0.18);
+    border-color: color-mix(in srgb, var(--hub-accent) 18%, transparent);
     background: #fff;
     box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px rgba(15, 23, 42, 0.06);
     display: flex;
@@ -1482,7 +1497,6 @@ canvas { display: block; max-width: 100%; width: 100%; height: auto; }
 }
 .hub-game-card:hover::before { opacity: 1; height: 4px; }
 .hub-game-card:hover::after { opacity: 1; }
-.hub-game-card:active { transform: translateY(-2px) scale(1.01); }
 .hub-game-card:focus-visible {
     outline: none;
     border-color: var(--hub-accent);
@@ -1545,6 +1559,16 @@ canvas { display: block; max-width: 100%; width: 100%; height: auto; }
     transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .hub-game-card:hover .hub-game-tag { transform: scale(1.06); }
+.hub-game-card.is-locked {
+    opacity: 0.78;
+}
+.hub-game-card.is-locked:hover {
+    transform: none;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+@media (max-width: 600px) {
+    .hub-game-tag { font-size: 0.7rem; padding: 0 8px; top: 10px; right: 10px; min-width: 30px; height: 30px; }
+}
 
 /* ── Game card illustrations ── */
 .hub-game-illust {
@@ -1681,7 +1705,6 @@ canvas { display: block; max-width: 100%; width: 100%; height: auto; }
     font-family: 'Lexend', 'Noto Sans TC', sans-serif;
 }
 .hub-game-card:hover .hub-game-btn {
-    filter: brightness(1.06);
     transform: translateY(-1px);
     box-shadow: 0 8px 20px var(--hub-glow);
 }
@@ -2199,7 +2222,9 @@ canvas { display: block; max-width: 100%; width: 100%; height: auto; }
     .hub-game-card:hover { transform: none; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
     .hub-game-card:hover .hub-game-icon { transform: none; }
     .hub-game-card:hover .illust-svg { transform: none; }
-    .hub-game-card:hover .hub-game-btn { filter: none; transform: none; }
+    .hub-game-card:hover .hub-game-btn { transform: none; }
+    .hub-game-card:hover .hub-game-tag { transform: none; }
+    .hub-game-card:hover::before { height: 3px; }
     .hub-game-card:hover::after { opacity: 0; }
     .quiz-opt-btn:hover:not(:disabled) { transform: none; border-color: var(--primary-purple); box-shadow: 0 4px 0 #E8EDFF; }
     .btn-back-hub:hover { transform: none; box-shadow: 0 3px 10px rgba(139,102,255,0.10); background: rgba(255,255,255,0.85); }

@@ -416,7 +416,13 @@
         if (!_profilePlayStartedAt) return 0;
         const secs = Math.max(0, Math.round((Date.now() - _profilePlayStartedAt) / 1000));
         _profilePlayStartedAt = 0;
-        return secs;
+        return Math.min(secs, 30 * 60);
+    }
+
+    function _escHtml(value) {
+        return String(value ?? '').replace(/[&<>"']/g, ch => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[ch]));
     }
 
     function formatPlayTime(totalSecs) {
@@ -446,9 +452,10 @@
                 ? '再玩一次就能看到進步趨勢！'
                 : '完成遊戲後，這裡會顯示你的進步。' };
         }
-        const recent = list.slice(-5);
-        const older = list.length >= 10 ? list.slice(-10, -5) : list.slice(0, Math.max(1, list.length - recent.length));
-        if (!older.length) {
+        const split = Math.floor(list.length / 2);
+        const older = list.slice(0, split);
+        const recent = list.slice(split);
+        if (!older.length || !recent.length) {
             return { ready: false, message: '再多玩幾次就能比較進步！' };
         }
         const avg = (arr, key) => Math.round(arr.reduce((a, r) => a + (r[key] || 0), 0) / arr.length);
@@ -471,6 +478,8 @@
             ready: true, tone, headline,
             olderAcc, recentAcc, accDiff,
             olderScore, recentScore, scoreDiff,
+            olderCount: older.length,
+            recentCount: recent.length,
             totalSessions: list.length,
         };
     }
@@ -799,7 +808,7 @@
                             <div class="ptm-delta trend-${summary.tone}">${scoreArrow} ${scoreSign}${summary.scoreDiff}</div>
                         </div>
                     </div>
-                    <div class="profile-trend-note">比較近 ${Math.min(5, summary.totalSessions)} 次 vs 更早的遊玩紀錄（共 ${summary.totalSessions} 次）</div>`;
+                    <div class="profile-trend-note">比較近 ${summary.recentCount} 次 vs 更早 ${summary.olderCount} 次（共 ${summary.totalSessions} 次）</div>`;
             }
         }
         if (recentEl) {
@@ -810,10 +819,10 @@
                 recentEl.innerHTML = recent.map(h => {
                     const label = PROFILE_GAME_LABELS[h.game] || h.game || '遊戲';
                     return `<div class="profile-recent-row">
-                        <div class="prr-game">${label}</div>
-                        <div class="prr-meta">${h.date || ''}</div>
-                        <div class="prr-score">${h.score} 分</div>
-                        <div class="prr-acc">${h.accuracy}%</div>
+                        <div class="prr-game">${_escHtml(label)}</div>
+                        <div class="prr-meta">${_escHtml(h.date || '')}</div>
+                        <div class="prr-score">${_escHtml(h.score)} 分</div>
+                        <div class="prr-acc">${_escHtml(h.accuracy)}%</div>
                     </div>`;
                 }).join('');
             }
@@ -2995,6 +3004,16 @@
         }).join('') + (f.length > MAX_RENDER ? `<div style="text-align:center;padding:16px;color:var(--text-light);font-size:0.85rem;">顯示前 ${MAX_RENDER} 名（共 ${f.length} 人）</div>` : '');
     }
 
+    // Browsers can't defer loading="lazy" inside display:none containers, so modal
+    // artwork keeps its URL in data-src until the modal is actually opened.
+    function hydrateDeferredImages(container) {
+        if (!container) return;
+        container.querySelectorAll('img[data-src]').forEach(img => {
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+        });
+    }
+
     function initTutorial() {
         const modal = document.getElementById('tutorialModal');
         if (!modal) return;
@@ -3020,6 +3039,7 @@
         }
 
         document.getElementById('tutorialBtn').addEventListener('click', () => {
+            hydrateDeferredImages(modal);
             goTo(0);
             modal.style.display = 'flex';
             audio.init();
@@ -3902,7 +3922,10 @@
             if (durRefBtn) durRefBtn.onclick = (e) => {
                 e.stopPropagation();
                 const modal = document.getElementById('durRefModal');
-                if (modal) modal.style.display = 'flex';
+                if (modal) {
+                    hydrateDeferredImages(modal);
+                    modal.style.display = 'flex';
+                }
             };
 
             // durHelpModal close

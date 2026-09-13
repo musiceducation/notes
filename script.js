@@ -78,27 +78,27 @@
     // 調號辨別 + 唱名辨別 資料
     // ==========================================
     const KEY_SIGNATURES = [
-        { id:'C',  name:'C大調',  sharps:0, flats:0, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-0n.png', grade:1,
+        { id:'C',  name:'C大調',  sharps:0, flats:0, img:'img/cards/keysig-0n.png', grade:1,
           sharpNotes:[], flatNotes:[], scale:['C','D','E','F','G','A','B'] },
-        { id:'G',  name:'G大調',  sharps:1, flats:0, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-1s.png', grade:1,
+        { id:'G',  name:'G大調',  sharps:1, flats:0, img:'img/cards/keysig-1s.png', grade:1,
           sharpNotes:['F'], flatNotes:[], scale:['G','A','B','C','D','E','F#'] },
-        { id:'F',  name:'F大調',  sharps:0, flats:1, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-1f.png', grade:1,
+        { id:'F',  name:'F大調',  sharps:0, flats:1, img:'img/cards/keysig-1f.png', grade:1,
           sharpNotes:[], flatNotes:['B'], scale:['F','G','A','B♭','C','D','E'] },
-        { id:'D',  name:'D大調',  sharps:2, flats:0, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-2s.png', grade:3,
+        { id:'D',  name:'D大調',  sharps:2, flats:0, img:'img/cards/keysig-2s.png', grade:3,
           sharpNotes:['F','C'], flatNotes:[], scale:['D','E','F#','G','A','B','C#'] },
-        { id:'Bb', name:'B♭大調', sharps:0, flats:2, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-2f.png', grade:3,
+        { id:'Bb', name:'B♭大調', sharps:0, flats:2, img:'img/cards/keysig-2f.png', grade:3,
           sharpNotes:[], flatNotes:['B','E'], scale:['B♭','C','D','E♭','F','G','A'] },
-        { id:'A',  name:'A大調',  sharps:3, flats:0, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-3s.png', grade:4,
+        { id:'A',  name:'A大調',  sharps:3, flats:0, img:'img/cards/keysig-3s.png', grade:4,
           sharpNotes:['F','C','G'], flatNotes:[], scale:['A','B','C#','D','E','F#','G#'] },
-        { id:'Eb', name:'E♭大調', sharps:0, flats:3, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-3f.png', grade:4,
+        { id:'Eb', name:'E♭大調', sharps:0, flats:3, img:'img/cards/keysig-3f.png', grade:4,
           sharpNotes:[], flatNotes:['B','E','A'], scale:['E♭','F','G','A♭','B♭','C','D'] },
-        { id:'E',  name:'E大調',  sharps:4, flats:0, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-4s.png', grade:5,
+        { id:'E',  name:'E大調',  sharps:4, flats:0, img:'img/cards/keysig-4s.png', grade:5,
           sharpNotes:['F','C','G','D'], flatNotes:[], scale:['E','F#','G#','A','B','C#','D#'] },
-        { id:'Ab', name:'A♭大調', sharps:0, flats:4, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-4f.png', grade:5,
+        { id:'Ab', name:'A♭大調', sharps:0, flats:4, img:'img/cards/keysig-4f.png', grade:5,
           sharpNotes:[], flatNotes:['B','E','A','D'], scale:['A♭','B♭','C','D♭','E♭','F','G'] },
-        { id:'B',  name:'B大調',  sharps:5, flats:0, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-5s.png', grade:6,
+        { id:'B',  name:'B大調',  sharps:5, flats:0, img:'img/cards/keysig-5s.png', grade:6,
           sharpNotes:['F','C','G','D','A'], flatNotes:[], scale:['B','C#','D#','E','F#','G#','A#'] },
-        { id:'Db', name:'D♭大調', sharps:0, flats:5, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-5f.png', grade:6,
+        { id:'Db', name:'D♭大調', sharps:0, flats:5, img:'img/cards/keysig-5f.png', grade:6,
           sharpNotes:[], flatNotes:['B','E','A','D','G'], scale:['D♭','E♭','F','G♭','A♭','B♭','C'] }
     ];
 
@@ -3625,12 +3625,18 @@
         const root = document.documentElement;
         const canRequest = !!(root.requestFullscreen || root.webkitRequestFullscreen);
         const canExit = !!(document.exitFullscreen || document.webkitExitFullscreen);
-        if (!canRequest || !canExit) {
+        const nativeApi = () => (typeof window !== 'undefined' ? window.__notesSpriteNative : null);
+        const isCapNative = () => !!(nativeApi() && nativeApi().isNative);
+        // iOS WKWebView often lacks Fullscreen API — keep button; use StatusBar immersive.
+        if ((!canRequest || !canExit) && !isCapNative()) {
             btn.hidden = true;
             return;
         }
 
+        let _capImmersive = false;
+
         function isFullscreen() {
+            if (isCapNative()) return _capImmersive;
             return !!(document.fullscreenElement || document.webkitFullscreenElement);
         }
 
@@ -3646,7 +3652,12 @@
 
         btn.addEventListener('click', async () => {
             try {
-                if (isFullscreen()) {
+                if (isCapNative() && nativeApi().setImmersive) {
+                    const next = !isFullscreen();
+                    const ok = await nativeApi().setImmersive(next);
+                    if (ok) _capImmersive = next;
+                    else console.warn('Cap immersive fullscreen unavailable');
+                } else if (isFullscreen()) {
                     if (document.exitFullscreen) await document.exitFullscreen();
                     else if (document.webkitExitFullscreen) await document.webkitExitFullscreen();
                 } else if (root.requestFullscreen) {
@@ -5835,19 +5846,19 @@
     // 🎵 時值辨別 — Duration Recognition Game
     // ══════════════════════════════════════════
     const DUR_QUESTIONS = [
-        { id: 'whole',       label: '全音符',       img: 'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p02.png', beats: 4,    isRest: false },
-        { id: 'dot-half',    label: '附點二分音符', img: 'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p03.png', beats: 3,    isRest: false },
-        { id: 'half',        label: '二分音符',     img: 'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p04.png', beats: 2,    isRest: false },
-        { id: 'dot-quarter', label: '附點四分音符', img: 'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p05.png', beats: 1.5,  isRest: false },
-        { id: 'quarter',     label: '四分音符',     img: 'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p06.png', beats: 1,    isRest: false },
-        { id: 'dot-eighth',  label: '附點八分音符', img: 'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p07.png', beats: 0.75, isRest: false },
-        { id: 'eighth',      label: '八分音符',     img: 'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p08.png', beats: 0.5,  isRest: false },
-        { id: '16th',        label: '十六分音符',   img: 'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p09.png', beats: 0.25, isRest: false },
-        { id: 'whole-r',     label: '全休止符',     img: 'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p18.png', beats: 4,    isRest: true },
-        { id: 'half-r',      label: '二分休止符',   img: 'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p19.png', beats: 2,    isRest: true },
-        { id: 'quarter-r',   label: '四分休止符',   img: 'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p20.png', beats: 1,    isRest: true },
-        { id: 'eighth-r',    label: '八分休止符',   img: 'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p21.png', beats: 0.5,  isRest: true },
-        { id: 'dot-quarter-r', label: '附點四分休止符', img: 'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p22.png', beats: 1.5, isRest: true },
+        { id: 'whole',       label: '全音符',       img: 'img/cards/rhythm-p02.png', beats: 4,    isRest: false },
+        { id: 'dot-half',    label: '附點二分音符', img: 'img/cards/rhythm-p03.png', beats: 3,    isRest: false },
+        { id: 'half',        label: '二分音符',     img: 'img/cards/rhythm-p04.png', beats: 2,    isRest: false },
+        { id: 'dot-quarter', label: '附點四分音符', img: 'img/cards/rhythm-p05.png', beats: 1.5,  isRest: false },
+        { id: 'quarter',     label: '四分音符',     img: 'img/cards/rhythm-p06.png', beats: 1,    isRest: false },
+        { id: 'dot-eighth',  label: '附點八分音符', img: 'img/cards/rhythm-p07.png', beats: 0.75, isRest: false },
+        { id: 'eighth',      label: '八分音符',     img: 'img/cards/rhythm-p08.png', beats: 0.5,  isRest: false },
+        { id: '16th',        label: '十六分音符',   img: 'img/cards/rhythm-p09.png', beats: 0.25, isRest: false },
+        { id: 'whole-r',     label: '全休止符',     img: 'img/cards/rhythm-p18.png', beats: 4,    isRest: true },
+        { id: 'half-r',      label: '二分休止符',   img: 'img/cards/rhythm-p19.png', beats: 2,    isRest: true },
+        { id: 'quarter-r',   label: '四分休止符',   img: 'img/cards/rhythm-p20.png', beats: 1,    isRest: true },
+        { id: 'eighth-r',    label: '八分休止符',   img: 'img/cards/rhythm-p21.png', beats: 0.5,  isRest: true },
+        { id: 'dot-quarter-r', label: '附點四分休止符', img: 'img/cards/rhythm-p22.png', beats: 1.5, isRest: true },
     ];
 
     const durState = {
@@ -5892,24 +5903,24 @@
                     <div class="dur-ref-mini-section">
                         <div class="dur-ref-heading">🎶 音符</div>
                         <div class="dur-ref-mini-list">
-                            <div class="dur-ref-mini-row"><img src="https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p02.png" alt="全音符"><span>全音符</span><b>4拍</b></div>
-                            <div class="dur-ref-mini-row"><img src="https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p03.png" alt="附點二分音符"><span>附點二分</span><b>3拍</b></div>
-                            <div class="dur-ref-mini-row"><img src="https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p04.png" alt="二分音符"><span>二分音符</span><b>2拍</b></div>
-                            <div class="dur-ref-mini-row"><img src="https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p05.png" alt="附點四分音符"><span>附點四分</span><b>1.5拍</b></div>
-                            <div class="dur-ref-mini-row"><img src="https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p06.png" alt="四分音符"><span>四分音符</span><b>1拍</b></div>
-                            <div class="dur-ref-mini-row"><img src="https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p07.png" alt="附點八分音符"><span>附點八分</span><b>¾拍</b></div>
-                            <div class="dur-ref-mini-row"><img src="https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p08.png" alt="八分音符"><span>八分音符</span><b>½拍</b></div>
-                            <div class="dur-ref-mini-row"><img src="https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p09.png" alt="十六分音符"><span>十六分</span><b>¼拍</b></div>
+                            <div class="dur-ref-mini-row"><img src="img/cards/rhythm-p02.png" alt="全音符"><span>全音符</span><b>4拍</b></div>
+                            <div class="dur-ref-mini-row"><img src="img/cards/rhythm-p03.png" alt="附點二分音符"><span>附點二分</span><b>3拍</b></div>
+                            <div class="dur-ref-mini-row"><img src="img/cards/rhythm-p04.png" alt="二分音符"><span>二分音符</span><b>2拍</b></div>
+                            <div class="dur-ref-mini-row"><img src="img/cards/rhythm-p05.png" alt="附點四分音符"><span>附點四分</span><b>1.5拍</b></div>
+                            <div class="dur-ref-mini-row"><img src="img/cards/rhythm-p06.png" alt="四分音符"><span>四分音符</span><b>1拍</b></div>
+                            <div class="dur-ref-mini-row"><img src="img/cards/rhythm-p07.png" alt="附點八分音符"><span>附點八分</span><b>¾拍</b></div>
+                            <div class="dur-ref-mini-row"><img src="img/cards/rhythm-p08.png" alt="八分音符"><span>八分音符</span><b>½拍</b></div>
+                            <div class="dur-ref-mini-row"><img src="img/cards/rhythm-p09.png" alt="十六分音符"><span>十六分</span><b>¼拍</b></div>
                         </div>
                     </div>
                     <div class="dur-ref-mini-section">
                         <div class="dur-ref-heading">🤫 休止符</div>
                         <div class="dur-ref-mini-list">
-                            <div class="dur-ref-mini-row"><img src="https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p18.png" alt="全休止符"><span>全休止符</span><b>4拍</b></div>
-                            <div class="dur-ref-mini-row"><img src="https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p19.png" alt="二分休止符"><span>二分休止</span><b>2拍</b></div>
-                            <div class="dur-ref-mini-row"><img src="https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p20.png" alt="四分休止符"><span>四分休止</span><b>1拍</b></div>
-                            <div class="dur-ref-mini-row"><img src="https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p21.png" alt="八分休止符"><span>八分休止</span><b>½拍</b></div>
-                            <div class="dur-ref-mini-row"><img src="https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rhythm-p22.png" alt="附點四分休止符"><span>附點四分休止</span><b>1.5拍</b></div>
+                            <div class="dur-ref-mini-row"><img src="img/cards/rhythm-p18.png" alt="全休止符"><span>全休止符</span><b>4拍</b></div>
+                            <div class="dur-ref-mini-row"><img src="img/cards/rhythm-p19.png" alt="二分休止符"><span>二分休止</span><b>2拍</b></div>
+                            <div class="dur-ref-mini-row"><img src="img/cards/rhythm-p20.png" alt="四分休止符"><span>四分休止</span><b>1拍</b></div>
+                            <div class="dur-ref-mini-row"><img src="img/cards/rhythm-p21.png" alt="八分休止符"><span>八分休止</span><b>½拍</b></div>
+                            <div class="dur-ref-mini-row"><img src="img/cards/rhythm-p22.png" alt="附點四分休止符"><span>附點四分休止</span><b>1.5拍</b></div>
                         </div>
                     </div>
                 </div>
@@ -6252,7 +6263,7 @@
             const num = String(card.num).padStart(2, '0');
             const el = document.createElement('div');
             el.className = 'rc-level-card';
-            el.innerHTML = `<div class="rc-level-thumb"><img src="https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/rc-${num}.png" alt="節奏卡 ${card.num}" loading="lazy">${_rcGetGradeBadge(card.num)}<button class="rc-level-preview-btn" title="試聽節奏">▶</button></div>
+            el.innerHTML = `<div class="rc-level-thumb"><img src="img/cards/rc-${num}.png" alt="節奏卡 ${card.num}" loading="lazy">${_rcGetGradeBadge(card.num)}<button class="rc-level-preview-btn" title="試聽節奏">▶</button></div>
                 <div class="rc-level-copy">
                     <div class="rc-level-num">No.${card.num}</div>
                     <div class="rc-level-diff">${'⭐'.repeat(card.level)}</div>
@@ -8189,7 +8200,7 @@
             { q: '以下力度術語由弱到強排序，緊接在「p」後面的是哪個？', sym: 'pp  p  _  mf  f  ff', ans: 'mp', opts: ['mf','mp','ff','pp'], isText: true, explain: '標準排序是 pp → p → mp → mf → f → ff，所以緊接在 p 後面的是 mp。' },
             { q: '以下哪個力度最弱？', sym: 'pp  p  mp', ans: 'pp', opts: ['pp','p','mp','mf'], isText: true, explain: 'pp = pianissimo = 很弱，是三者中最弱的。' },
             { q: '以下哪個力度最強？', sym: 'f  mf  ff', ans: 'ff', opts: ['f','mf','ff','mp'], isText: true, explain: 'ff = fortissimo = 很強，是三者中最強的。' },
-            { q: 'C大調的調號有多少個升降號？', ans: '沒有（0個）', opts: ['沒有（0個）','1個升號','1個降號','2個升號'], ksImg:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-0n.png', ksCaption:'<strong class="ks-major">C大調 / a小調</strong>', explain: 'C大調是唯一沒有升降號的大調。' },
+            { q: 'C大調的調號有多少個升降號？', ans: '沒有（0個）', opts: ['沒有（0個）','1個升號','1個降號','2個升號'], ksImg:'img/cards/keysig-0n.png', ksCaption:'<strong class="ks-major">C大調 / a小調</strong>', explain: 'C大調是唯一沒有升降號的大調。' },
             // ── 強弱記號 Q1 ──
             { q: '在音樂中，「f」代表什麼意思？', sym: 'f', ans: '強（Forte）', opts: ['強（Forte）','弱（Piano）','中強（Mezzo-forte）','很強（Fortissimo）'], isText: true, explain: 'f = forte = 強，是最常見的力度記號之一。' },
             // ── 強弱記號 Q2 ──
@@ -8224,10 +8235,10 @@
             { q: '兩道雙槓加上兩個圓點（ ‖: :‖ ），代表什麼指令？', sym: '‖: :‖', ans: '重複記號（重複演奏一段）', opts: ['重複記號（重複演奏一段）','樂曲結束','從頭再奏','速度加快'], isText: true, explain: '‖: :‖ = 反覆記號，要把括號內的樂段重複演奏一次。' },
             { q: '「rit.」和「accel.」是甚麼關係？', sym: 'rit. ↔ accel.', ans: '相反（漸慢 vs 漸快）', opts: ['相反（漸慢 vs 漸快）','意思一樣','一個是力度一個是速度','沒有關係'], isText: true, explain: 'rit. = 漸慢，accel. = 漸快，兩者相反。' },
             { q: '「反覆記號」的作用是甚麼？', sym: '|: :|', ans: '重複演奏一段', opts: ['樂曲結束','重複演奏一段','從頭再奏','從記號重奏'], isText: true, explain: '|: :| = 將括號內的樂段重複演奏一次。' },
-            { q: '這個調號是哪個大調？', ans: 'G大調', opts: ['C大調','G大調','D大調','F大調'], ksImg:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-1s.png', ksCaption:'<span class="ks-notes">升 Fa</span>', explain: 'G大調有1個升號，升Fa（F♯）。' },
-            { q: 'G大調的關係小調是哪個？', ans: 'e小調', opts: ['a小調','e小調','b小調','d小調'], ksImg:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-1s.png', ksCaption:'<strong class="ks-major">G大調</strong>', explain: 'G大調的關係小調是e小調。' },
-            { q: '這個調號是哪個大調？', ans: 'F大調', opts: ['C大調','G大調','F大調','B♭大調'], ksImg:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-1f.png', ksCaption:'<span class="ks-notes">降 Si</span>', explain: 'F大調有1個降號，降Si（B♭）。' },
-            { q: 'F大調的關係小調是哪個？', ans: 'd小調', opts: ['a小調','d小調','g小調','e小調'], ksImg:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-1f.png', ksCaption:'<strong class="ks-major">F大調</strong>', explain: 'F大調的關係小調是d小調。' },
+            { q: '這個調號是哪個大調？', ans: 'G大調', opts: ['C大調','G大調','D大調','F大調'], ksImg:'img/cards/keysig-1s.png', ksCaption:'<span class="ks-notes">升 Fa</span>', explain: 'G大調有1個升號，升Fa（F♯）。' },
+            { q: 'G大調的關係小調是哪個？', ans: 'e小調', opts: ['a小調','e小調','b小調','d小調'], ksImg:'img/cards/keysig-1s.png', ksCaption:'<strong class="ks-major">G大調</strong>', explain: 'G大調的關係小調是e小調。' },
+            { q: '這個調號是哪個大調？', ans: 'F大調', opts: ['C大調','G大調','F大調','B♭大調'], ksImg:'img/cards/keysig-1f.png', ksCaption:'<span class="ks-notes">降 Si</span>', explain: 'F大調有1個降號，降Si（B♭）。' },
+            { q: 'F大調的關係小調是哪個？', ans: 'd小調', opts: ['a小調','d小調','g小調','e小調'], ksImg:'img/cards/keysig-1f.png', ksCaption:'<strong class="ks-major">F大調</strong>', explain: 'F大調的關係小調是d小調。' },
         ],
         hard: [
             { q: '以下哪個速度最慢？', sym: 'Largo · Adagio · Presto', ans: 'Largo', opts: ['Largo','Adagio','Presto','Allegro'], isText: true, explain: 'Largo（廣板）是所有速度術語中最慢的之一。' },
@@ -8240,16 +8251,16 @@
             { q: '「D.S. al Coda」代表怎樣演奏？', sym: 'D.S. al Coda', ans: '從記號重奏至 Coda 跳尾聲', opts: ['從記號重奏至 Coda 跳尾聲','從頭再奏','直接結束','重複一次'], isText: true, explain: 'D.S. = 從 Segno 記號重奏，al Coda = 到 Coda 記號跳尾聲。' },
             { q: '「molto」加在術語前代表甚麼？', sym: 'molto forte', ans: '非常（加強程度）', opts: ['非常（加強程度）','一點點','不太','稍微'], isText: true, explain: 'molto = 非常/很多，molto forte = 非常強。' },
             { q: '「poco a poco」代表甚麼？', sym: 'poco a poco', ans: '逐漸地', opts: ['突然','逐漸地','很快','一次過'], isText: true, explain: 'poco a poco = 一點一點地 = 逐漸地。' },
-            { q: '這個調號是哪個大調？', ans: 'D大調', opts: ['D大調','A大調','E大調','G大調'], ksImg:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-2s.png', ksCaption:'<span class="ks-notes">升 Fa、Do</span>', explain: 'D大調有2個升號。' },
-            { q: 'D大調的關係小調是哪個？', ans: 'b小調', opts: ['e小調','b小調','f♯小調','g小調'], ksImg:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-2s.png', ksCaption:'<strong class="ks-major">D大調</strong>', explain: 'D大調的關係小調是b小調。' },
-            { q: '這個調號是哪個大調？', ans: 'B♭大調', opts: ['B♭大調','E♭大調','A♭大調','F大調'], ksImg:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-2f.png', ksCaption:'<span class="ks-notes">降 Si、Mi</span>', explain: 'B♭大調有2個降號。' },
-            { q: 'B♭大調的關係小調是哪個？', ans: 'g小調', opts: ['d小調','g小調','c小調','f小調'], ksImg:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-2f.png', ksCaption:'<strong class="ks-major">B♭大調</strong>', explain: 'B♭大調的關係小調是g小調。' },
-            { q: '這個調號是哪個大調？', ans: 'A大調', opts: ['A大調','E大調','D大調','G大調'], ksImg:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-3s.png', ksCaption:'<span class="ks-notes">升 Fa、Do、Sol</span>', explain: 'A大調有3個升號。' },
-            { q: 'A大調的關係小調是哪個？', ans: 'f♯小調', opts: ['b小調','f♯小調','c♯小調','e小調'], ksImg:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-3s.png', ksCaption:'<strong class="ks-major">A大調</strong>', explain: 'A大調的關係小調是f♯小調。' },
-            { q: '這個調號是哪個大調？', ans: 'E♭大調', opts: ['B♭大調','E♭大調','A♭大調','G大調'], ksImg:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-3f.png', ksCaption:'<span class="ks-notes">降 Si、Mi、La</span>', explain: 'E♭大調有3個降號。' },
-            { q: 'E♭大調的關係小調是哪個？', ans: 'c小調', opts: ['d小調','g小調','c小調','f小調'], ksImg:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-3f.png', ksCaption:'<strong class="ks-major">E♭大調</strong>', explain: 'E♭大調的關係小調是c小調。' },
-            { q: '這個調號是哪個大調？', ans: 'E大調', opts: ['D大調','E大調','A大調','B大調'], ksImg:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-4s.png', ksCaption:'<span class="ks-notes">升 Fa Do Sol Re</span>', explain: '4個升號 = E大調。' },
-            { q: '這個調號是哪個大調？', ans: 'A♭大調', opts: ['E♭大調','A♭大調','D♭大調','B♭大調'], ksImg:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-4f.png', ksCaption:'<span class="ks-notes">降 Si Mi La Re</span>', explain: 'A♭大調有4個降號。' },
+            { q: '這個調號是哪個大調？', ans: 'D大調', opts: ['D大調','A大調','E大調','G大調'], ksImg:'img/cards/keysig-2s.png', ksCaption:'<span class="ks-notes">升 Fa、Do</span>', explain: 'D大調有2個升號。' },
+            { q: 'D大調的關係小調是哪個？', ans: 'b小調', opts: ['e小調','b小調','f♯小調','g小調'], ksImg:'img/cards/keysig-2s.png', ksCaption:'<strong class="ks-major">D大調</strong>', explain: 'D大調的關係小調是b小調。' },
+            { q: '這個調號是哪個大調？', ans: 'B♭大調', opts: ['B♭大調','E♭大調','A♭大調','F大調'], ksImg:'img/cards/keysig-2f.png', ksCaption:'<span class="ks-notes">降 Si、Mi</span>', explain: 'B♭大調有2個降號。' },
+            { q: 'B♭大調的關係小調是哪個？', ans: 'g小調', opts: ['d小調','g小調','c小調','f小調'], ksImg:'img/cards/keysig-2f.png', ksCaption:'<strong class="ks-major">B♭大調</strong>', explain: 'B♭大調的關係小調是g小調。' },
+            { q: '這個調號是哪個大調？', ans: 'A大調', opts: ['A大調','E大調','D大調','G大調'], ksImg:'img/cards/keysig-3s.png', ksCaption:'<span class="ks-notes">升 Fa、Do、Sol</span>', explain: 'A大調有3個升號。' },
+            { q: 'A大調的關係小調是哪個？', ans: 'f♯小調', opts: ['b小調','f♯小調','c♯小調','e小調'], ksImg:'img/cards/keysig-3s.png', ksCaption:'<strong class="ks-major">A大調</strong>', explain: 'A大調的關係小調是f♯小調。' },
+            { q: '這個調號是哪個大調？', ans: 'E♭大調', opts: ['B♭大調','E♭大調','A♭大調','G大調'], ksImg:'img/cards/keysig-3f.png', ksCaption:'<span class="ks-notes">降 Si、Mi、La</span>', explain: 'E♭大調有3個降號。' },
+            { q: 'E♭大調的關係小調是哪個？', ans: 'c小調', opts: ['d小調','g小調','c小調','f小調'], ksImg:'img/cards/keysig-3f.png', ksCaption:'<strong class="ks-major">E♭大調</strong>', explain: 'E♭大調的關係小調是c小調。' },
+            { q: '這個調號是哪個大調？', ans: 'E大調', opts: ['D大調','E大調','A大調','B大調'], ksImg:'img/cards/keysig-4s.png', ksCaption:'<span class="ks-notes">升 Fa Do Sol Re</span>', explain: '4個升號 = E大調。' },
+            { q: '這個調號是哪個大調？', ans: 'A♭大調', opts: ['E♭大調','A♭大調','D♭大調','B♭大調'], ksImg:'img/cards/keysig-4f.png', ksCaption:'<span class="ks-notes">降 Si Mi La Re</span>', explain: 'A♭大調有4個降號。' },
         ]
     };
 
@@ -8363,16 +8374,16 @@
 
     const FULL_TERMS_TABLE = [
         // 力度 (Dynamics)
-        { cat:'dynamics', sym:'pp',        name:'Pianissimo',   meaning:'很弱',           grade:2, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/sym-pp.png' },
-        { cat:'dynamics', sym:'p',         name:'Piano',        meaning:'弱',             grade:1, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/sym-p.png' },
-        { cat:'dynamics', sym:'mp',        name:'Mezzo-piano',  meaning:'中弱',           grade:1, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/sym-mp.png' },
-        { cat:'dynamics', sym:'mf',        name:'Mezzo-forte',  meaning:'中強',           grade:1, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/sym-mf.png' },
-        { cat:'dynamics', sym:'f',         name:'Forte',        meaning:'強',             grade:1, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/sym-f.png' },
-        { cat:'dynamics', sym:'ff',        name:'Fortissimo',   meaning:'很強',           grade:2, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/sym-ff.png' },
-        { cat:'dynamics', sym:'sf',        name:'Sforzando',    meaning:'突強',           grade:4, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/sym-sf.png' },
-        { cat:'dynamics', sym:'fp',        name:'Forte-piano',  meaning:'強後即弱',       grade:5, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/sym-fp.png' },
-        { cat:'dynamics', sym:'cresc.',    name:'Crescendo',    meaning:'漸強',           grade:2, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/sym-cresc.png' },
-        { cat:'dynamics', sym:'decresc.',  name:'Decrescendo',  meaning:'漸弱',           grade:2, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/sym-decresc.png' },
+        { cat:'dynamics', sym:'pp',        name:'Pianissimo',   meaning:'很弱',           grade:2, img:'img/cards/sym-pp.png' },
+        { cat:'dynamics', sym:'p',         name:'Piano',        meaning:'弱',             grade:1, img:'img/cards/sym-p.png' },
+        { cat:'dynamics', sym:'mp',        name:'Mezzo-piano',  meaning:'中弱',           grade:1, img:'img/cards/sym-mp.png' },
+        { cat:'dynamics', sym:'mf',        name:'Mezzo-forte',  meaning:'中強',           grade:1, img:'img/cards/sym-mf.png' },
+        { cat:'dynamics', sym:'f',         name:'Forte',        meaning:'強',             grade:1, img:'img/cards/sym-f.png' },
+        { cat:'dynamics', sym:'ff',        name:'Fortissimo',   meaning:'很強',           grade:2, img:'img/cards/sym-ff.png' },
+        { cat:'dynamics', sym:'sf',        name:'Sforzando',    meaning:'突強',           grade:4, img:'img/cards/sym-sf.png' },
+        { cat:'dynamics', sym:'fp',        name:'Forte-piano',  meaning:'強後即弱',       grade:5, img:'img/cards/sym-fp.png' },
+        { cat:'dynamics', sym:'cresc.',    name:'Crescendo',    meaning:'漸強',           grade:2, img:'img/cards/sym-cresc.png' },
+        { cat:'dynamics', sym:'decresc.',  name:'Decrescendo',  meaning:'漸弱',           grade:2, img:'img/cards/sym-decresc.png' },
         // 速度 (Tempo)
         { cat:'tempo',    sym:'Largo',     name:'Largo',        meaning:'廣板（極慢）',   grade:5 },
         { cat:'tempo',    sym:'Grave',     name:'Grave',        meaning:'莊板（極慢）',   grade:6 },
@@ -8390,26 +8401,26 @@
         { cat:'tempo',    sym:'più mosso', name:'Più mosso',    meaning:'更快地',         grade:6 },
         // 奏法 (Articulation)
         { cat:'articulation', sym:'⌢',   name:'Legato',    meaning:'連奏',             grade:2 },
-        { cat:'articulation', sym:'·',   name:'Staccato',  meaning:'斷奏',             grade:2, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/sym-art-staccato.png' },
-        { cat:'articulation', sym:'>',   name:'Accent',    meaning:'重音',             grade:3, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/sym-art-accent.png' },
-        { cat:'articulation', sym:'—',   name:'Tenuto',    meaning:'持音（保持音值）', grade:5, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/sym-art-tenuto.png' },
-        { cat:'articulation', sym:'𝄐',   name:'Fermata',   meaning:'延長號',           grade:5, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/sym-art-fermata.png' },
+        { cat:'articulation', sym:'·',   name:'Staccato',  meaning:'斷奏',             grade:2, img:'img/cards/sym-art-staccato.png' },
+        { cat:'articulation', sym:'>',   name:'Accent',    meaning:'重音',             grade:3, img:'img/cards/sym-art-accent.png' },
+        { cat:'articulation', sym:'—',   name:'Tenuto',    meaning:'持音（保持音值）', grade:5, img:'img/cards/sym-art-tenuto.png' },
+        { cat:'articulation', sym:'𝄐',   name:'Fermata',   meaning:'延長號',           grade:5, img:'img/cards/sym-art-fermata.png' },
         { cat:'articulation', sym:'^',   name:'Marcato',   meaning:'強奏',             grade:6 },
         // 調號 (Key Signatures) — use extracted PDF images
-        { cat:'keysig', sym:'0♯ 0♭', name:'C大調 / a小調', meaning:'無升降號',         grade:1, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-0n.png' },
-        { cat:'keysig', sym:'1♯',    name:'G大調 / e小調', meaning:'升 Fa（F♯）',      grade:3, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-1s.png' },
-        { cat:'keysig', sym:'2♯',    name:'D大調 / b小調', meaning:'升 Fa、Do',        grade:4, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-2s.png' },
-        { cat:'keysig', sym:'3♯',    name:'A大調 / f♯小調',meaning:'升 Fa、Do、Sol',   grade:5, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-3s.png' },
-        { cat:'keysig', sym:'4♯',    name:'E大調 / c♯小調',meaning:'升 Fa Do Sol Re', grade:6, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-4s.png' },
-        { cat:'keysig', sym:'1♭',    name:'F大調 / d小調', meaning:'降 Si（B♭）',      grade:3, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-1f.png' },
-        { cat:'keysig', sym:'2♭',    name:'B♭大調 / g小調',meaning:'降 Si、Mi',        grade:4, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-2f.png' },
-        { cat:'keysig', sym:'3♭',    name:'E♭大調 / c小調',meaning:'降 Si、Mi、La',    grade:5, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-3f.png' },
-        { cat:'keysig', sym:'4♭',    name:'A♭大調 / f小調',meaning:'降 Si Mi La Re',   grade:6, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/keysig-4f.png' },
+        { cat:'keysig', sym:'0♯ 0♭', name:'C大調 / a小調', meaning:'無升降號',         grade:1, img:'img/cards/keysig-0n.png' },
+        { cat:'keysig', sym:'1♯',    name:'G大調 / e小調', meaning:'升 Fa（F♯）',      grade:3, img:'img/cards/keysig-1s.png' },
+        { cat:'keysig', sym:'2♯',    name:'D大調 / b小調', meaning:'升 Fa、Do',        grade:4, img:'img/cards/keysig-2s.png' },
+        { cat:'keysig', sym:'3♯',    name:'A大調 / f♯小調',meaning:'升 Fa、Do、Sol',   grade:5, img:'img/cards/keysig-3s.png' },
+        { cat:'keysig', sym:'4♯',    name:'E大調 / c♯小調',meaning:'升 Fa Do Sol Re', grade:6, img:'img/cards/keysig-4s.png' },
+        { cat:'keysig', sym:'1♭',    name:'F大調 / d小調', meaning:'降 Si（B♭）',      grade:3, img:'img/cards/keysig-1f.png' },
+        { cat:'keysig', sym:'2♭',    name:'B♭大調 / g小調',meaning:'降 Si、Mi',        grade:4, img:'img/cards/keysig-2f.png' },
+        { cat:'keysig', sym:'3♭',    name:'E♭大調 / c小調',meaning:'降 Si、Mi、La',    grade:5, img:'img/cards/keysig-3f.png' },
+        { cat:'keysig', sym:'4♭',    name:'A♭大調 / f小調',meaning:'降 Si Mi La Re',   grade:6, img:'img/cards/keysig-4f.png' },
         // 曲式記號 (Form/Repeat)
-        { cat:'form', sym:'‖: :‖',  name:'反覆記號',  meaning:'重複演奏一段', grade:2, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/sym-bar-repeat-start.png' },
+        { cat:'form', sym:'‖: :‖',  name:'反覆記號',  meaning:'重複演奏一段', grade:2, img:'img/cards/sym-bar-repeat-start.png' },
         { cat:'form', sym:'1.  2.', name:'第一/二括', meaning:'第一/二次結尾',grade:3 },
         { cat:'form', sym:'D.C.',   name:'Da Capo',   meaning:'從頭再奏',     grade:4 },
-        { cat:'form', sym:'D.S.',   name:'Dal Segno', meaning:'從記號重奏',   grade:4, img:'https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/cards/sym-sym-segno.png' },
+        { cat:'form', sym:'D.S.',   name:'Dal Segno', meaning:'從記號重奏',   grade:4, img:'img/cards/sym-sym-segno.png' },
         { cat:'form', sym:'Fine',   name:'Fine',      meaning:'樂曲結束',     grade:4 },
         // 情緒/表情 (Expression/Character)
         { cat:'expression', sym:'cantabile',  name:'Cantabile',  meaning:'如歌地',   grade:5 },

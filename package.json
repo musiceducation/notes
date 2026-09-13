@@ -3,6 +3,18 @@
   "private": true,
   "scripts": {
     "build": "node scripts/build.mjs",
-    "validate": "node scripts/build.mjs"
+    "validate": "node scripts/build.mjs",
+    "build:www": "node scripts/build.mjs --sync-www",
+    "cap:sync": "npm run build:www && npx cap sync ios",
+    "ios:open": "npx cap open ios"
+  },
+  "devDependencies": {
+    "@capacitor/app": "^6.0.2",
+    "@capacitor/cli": "^6.2.0",
+    "@capacitor/core": "^6.2.0",
+    "@capacitor/ios": "^6.2.0",
+    "@capacitor/splash-screen": "^6.0.2",
+    "@capacitor/status-bar": "^6.0.2",
+    "esbuild": "^0.20.2"
   }
 }

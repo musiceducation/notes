@@ -1,0 +1,507 @@
+/* ==========================================
+   🎨 UI 全面修復補丁 v1.0
+   音符小精靈 · 統一按鈕、卡片、響應式設計
+   ========================================== */
+
+/* ==========================================
+   1️⃣ 統一按鈕系統
+   ========================================== */
+
+/* 按鈕基底樣式 */
+.btn-start,
+.btn-action,
+.btn-view-ranks,
+.btn-restart-large,
+.btn-back-hub,
+.btn-studio,
+.studio-tab,
+.studio-chip,
+.rg-filter,
+.diff-btn,
+.clef-sel-btn,
+.opts-btn,
+.ks-mode-btn,
+.sol-mode-btn,
+.ks-grade-btn,
+.sol-grade-btn {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    font-family: 'Nunito', 'Noto Sans TC', sans-serif;
+    font-weight: 800;
+    cursor: pointer;
+    transition:
+        transform 0.12s ease,
+        box-shadow 0.12s ease,
+        background 0.15s ease,
+        border-color 0.15s ease;
+    user-select: none;
+}
+
+/* Hover 提升效果 */
+.btn-start:not(:disabled):hover,
+.btn-action:not(:disabled):hover,
+.btn-view-ranks:not(:disabled):hover,
+.btn-restart-large:not(:disabled):hover,
+.studio-tab:not(:disabled):hover,
+.studio-chip:not(:disabled):hover,
+.diff-btn:not(:disabled):hover,
+.clef-sel-btn:not(:disabled):hover {
+    transform: translateY(-2px);
+}
+
+/* Active 按下效果 */
+.btn-start:not(:disabled):active,
+.btn-action:not(:disabled):active,
+.btn-view-ranks:not(:disabled):active,
+.btn-restart-large:not(:disabled):active {
+    transform: translateY(3px) scale(0.97);
+    box-shadow: 0 1px 0 transparent;
+}
+
+.btn-back-hub:active {
+    transform: scale(0.94);
+}
+
+.studio-tab:active,
+.studio-chip:active {
+    transform: scale(0.95);
+}
+
+.rg-filter:active,
+.opts-btn:active,
+.diff-btn:active,
+.clef-sel-btn:active {
+    transform: scale(0.92);
+    transition-duration: 0.06s;
+}
+
+/* 禁用狀態 */
+button:disabled,
+.btn-start:disabled,
+.btn-action:disabled,
+.btn-view-ranks:disabled,
+.btn-restart-large:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* ==========================================
+   2️⃣ 統一卡片系統
+   ========================================== */
+
+/* 卡片基底 */
+.card,
+.hub-game-card,
+.quiz-card,
+.mode-card,
+.profile-card,
+.studio-panel {
+    border-radius: var(--ds-radius-lg, 18px);
+    box-shadow: var(--ds-shadow-cloud, 0 4px 16px rgba(0,0,0,0.08));
+    transition:
+        transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+/* 卡片 Hover */
+.card:hover,
+.hub-game-card:hover,
+.quiz-card:hover,
+.mode-card:hover,
+.profile-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--ds-shadow-bubbly-up, 0 8px 24px rgba(0,0,0,0.12));
+}
+
+/* 卡片 Active 按下 */
+.hub-game-card:active {
+    transform: translateY(2px) scale(0.98);
+}
+
+.mode-card:active {
+    transform: scale(0.95) !important;
+    transition-duration: 0.08s;
+}
+
+.quiz-card:active {
+    transform: scale(0.97);
+}
+
+/* ==========================================
+   3️⃣ Hub 遊戲卡片增強
+   ========================================== */
+
+.hub-games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    padding: 8px 0;
+}
+
+@media (max-width: 600px) {
+    .hub-games-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        padding: 6px 0;
+    }
+
+    .hub-game-card {
+        padding: 16px;
+        min-height: 140px;
+    }
+
+    .hub-game-illust {
+        height: 100px;
+    }
+
+    .hub-game-btn {
+        padding: 10px 16px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .hub-games-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1100px) {
+    .hub-games-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Hub 遊戲卡片按鈕增強 */
+.hub-game-btn {
+    background: linear-gradient(135deg, var(--primary-purple), var(--primary-purple-dark));
+    color: white;
+    padding: 12px 20px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 0 var(--primary-purple-dark), 0 6px 16px rgba(139,102,255,0.3);
+    transition: all 0.15s ease;
+    display: inline-block;
+    margin-top: 8px;
+}
+
+.hub-game-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 var(--primary-purple-dark), 0 10px 24px rgba(139,102,255,0.4);
+}
+
+.hub-game-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 var(--primary-purple-dark);
+}
+
+/* ==========================================
+   4️⃣ Quiz 選項按鈕優化
+   ========================================== */
+
+.quiz-opt-btn {
+    background: white;
+    border: 3px solid var(--ds-outline-variant, #E8EDFF);
+    border-radius: 16px;
+    padding: 14px 16px;
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--text-dark);
+    box-shadow: 0 4px 0 rgba(139,102,255,0.1);
+    transition: all 0.15s ease;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.quiz-opt-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    border-color: var(--primary-purple);
+    box-shadow: 0 6px 16px rgba(139,102,255,0.2);
+}
+
+.quiz-opt-btn:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.quiz-opt-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ==========================================
+   5️⃣ 統一滾動條
+   ========================================== */
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(139, 102, 255, 0.05);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(139, 102, 255, 0.2);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 102, 255, 0.35);
+}
+
+/* ==========================================
+   6️⃣ 移動設備優化
+   ========================================== */
+
+@media (max-width: 768px) {
+    /* 確保最小點擊區域 44px */
+    .btn-start,
+    .btn-action,
+    .btn-view-ranks,
+    .btn-restart-large,
+    .studio-tab,
+    .studio-chip,
+    .btn-studio,
+    .hub-game-btn,
+    .quiz-opt-btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    /* 改善輸入元素 */
+    input,
+    select,
+    textarea {
+        touch-action: manipulation;
+        font-family: inherit;
+    }
+
+    /* Hub 登入卡片 */
+    .hub-login-card {
+        padding: 16px;
+    }
+
+    .hub-login-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    /* 遊戲模式卡片 */
+    .mode-card {
+        padding: 20px 14px;
+    }
+}
+
+/* ==========================================
+   7️⃣ Safe Area 適配
+   ========================================== */
+
+@supports (padding: env(safe-area-inset-bottom)) {
+    .app-tab-bar {
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-bottom: calc(env(safe-area-inset-bottom) + 4px);
+    }
+
+    .rchal-screen,
+    .om-screen {
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    .rchal-start-btn,
+    .rchal-ready-btn {
+        margin-bottom: calc(6px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .rchal-tap {
+        margin-bottom: env(safe-area-inset-bottom, 0px);
+    }
+}
+
+/* ==========================================
+   8️⃣ 創作工作室 UI 統一
+   ========================================== */
+
+/* 工作室標籤增強 */
+.studio-tab {
+    background: white;
+    border: 2.5px solid var(--ds-outline-variant, #E8EDFF);
+    color: var(--text-light);
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.95rem;
+    box-shadow: 0 3px 0 rgba(139,102,255,0.15);
+    transition: all 0.2s ease;
+}
+
+.studio-tab:hover {
+    border-color: var(--primary-purple);
+    color: var(--primary-purple);
+    transform: translateY(-2px);
+}
+
+.studio-tab.active {
+    background: linear-gradient(135deg, var(--primary-purple), var(--primary-purple-dark));
+    border-color: var(--primary-purple-dark);
+    color: white;
+    box-shadow: 0 4px 0 var(--primary-purple-dark), 0 6px 16px rgba(139,102,255,0.3);
+}
+
+/* 工作室晶片增強 */
+.studio-chip {
+    background: white;
+    border: 2.5px solid var(--ds-outline-variant, #E8EDFF);
+    color: var(--text-light);
+    padding: 10px 18px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    box-shadow: 0 3px 0 rgba(139,102,255,0.15);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.studio-chip:hover {
+    border-color: var(--primary-purple);
+    color: var(--primary-purple);
+}
+
+.studio-chip.active {
+    background: linear-gradient(135deg, var(--primary-purple), var(--primary-purple-dark));
+    border-color: var(--primary-purple-dark);
+    color: white;
+}
+
+/* 工作室鋼琴鍵增強 */
+.studio-piano-key {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 0.1s ease;
+}
+
+.studio-piano-key:active {
+    transform: scale(0.95);
+}
+
+/* 工作室工具欄按鈕 */
+.btn-studio {
+    background: var(--ds-surface-container-lowest);
+    border: 2.5px solid var(--ds-outline-variant);
+    color: var(--text-light);
+    padding: 10px 18px;
+    border-radius: 14px;
+    font-weight: 800;
+    font-size: 0.88rem;
+    box-shadow: 0 3px 0 rgba(139,102,255,0.1);
+    transition: all 0.15s ease;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-studio:hover {
+    border-color: var(--primary-purple);
+    color: var(--primary-purple);
+    transform: translateY(-2px);
+}
+
+.btn-studio:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 rgba(139,102,255,0.1);
+}
+
+.btn-studio-primary {
+    background: linear-gradient(135deg, var(--primary-purple), var(--primary-purple-dark));
+    color: white;
+    border-color: var(--primary-purple-dark);
+    box-shadow: 0 4px 0 var(--primary-purple-dark), 0 6px 16px rgba(139,102,255,0.3);
+}
+
+.btn-studio-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 var(--primary-purple-dark), 0 10px 24px rgba(139,102,255,0.4);
+}
+
+.btn-studio-primary:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 var(--primary-purple-dark);
+}
+
+.btn-studio-soft {
+    background: var(--ds-surface-container-low);
+    border-color: var(--ds-surface-container-high);
+}
+
+/* ==========================================
+   9️⃣ 結束畫面按鈕統一
+   ========================================== */
+
+.btn-restart-large {
+    background: linear-gradient(135deg, var(--primary-purple), var(--primary-purple-dark));
+    color: white;
+    font-weight: 700;
+    font-size: 1.15rem;
+    border: none;
+    padding: 16px 24px;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 6px 0 var(--primary-purple-dark), 0 8px 20px rgba(139,102,255,0.35);
+    transition: all 0.15s ease;
+    width: 100%;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-restart-large:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 9px 0 var(--primary-purple-dark), 0 14px 28px rgba(139,102,255,0.45);
+}
+
+.btn-restart-large:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 var(--primary-purple-dark);
+}
+
+/* ==========================================
+   🔟 回饋動畫增強
+   ========================================== */
+
+/* 正確回饋 */
+.correct-flash {
+    animation: correctFlash 0.4s ease;
+}
+
+@keyframes correctFlash {
+    0%   { transform: scale(1); }
+    30%  { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+
+/* 錯誤回饋 */
+.wrong-shake {
+    animation: wrongShake 0.4s ease;
+}
+
+@keyframes wrongShake {
+    0%, 100% { transform: translateX(0); }
+    20%  { transform: translateX(-6px); }
+    40%  { transform: translateX(6px); }
+    60%  { transform: translateX(-4px); }
+    80%  { transform: translateX(4px); }
+}
+
+/* ==========================================
+   🔚 修復結束
+   ========================================== */

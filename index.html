@@ -14,8 +14,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&family=Nunito:wght@400;600;700;800;900&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="ui-fix-patch.css">
-    <link rel="stylesheet" href="design-v2.css">
     <script src="https://cdn.jsdelivr.net/npm/vexflow@5.0.0/build/cjs/vexflow.min.js" defer></script>
     <script src="https://unpkg.com/lucide@latest" defer></script>
 </head>
@@ -200,7 +198,7 @@
             <button class="hub-social-corner-btn hub-fullscreen-btn" id="hubFullscreenBtn" type="button" title="全螢幕" aria-label="全螢幕" aria-pressed="false">⛶</button>
         </div>
         <h1 class="game-title"><span class="title-icon">♩</span> <span id="hubTitleText">音符小精靈</span></h1>
-        <div class="game-subtitle" id="hubSubtitleText">互動音樂學習站 · 小一至小六</div>
+        <div class="game-subtitle" id="hubSubtitleText">互動音樂學習站</div>
 
         <div class="hub-layout">
         <aside class="hub-aside web-only-ui" aria-label="個人檔案摘要">
@@ -225,8 +223,8 @@
                 <div class="hub-field">
                     <label>① 年級</label>
                     <select id="hubGrade">
-                        <option value="1">小一</option><option value="2">小二</option><option value="3">小三</option>
-                        <option value="4">小四</option><option value="5">小五</option><option value="6" selected>小六</option>
+                        <option value="1" selected>中一</option><option value="2">中二</option><option value="3">中三</option>
+                        <option value="4">中四</option><option value="5">中五</option><option value="6">中六</option>
                     </select>
                 </div>
                 <div class="hub-field">
@@ -619,8 +617,8 @@
                 <div class="cm-filter-field">
                     <label>年級</label>
                     <select id="cmGrade">
-                        <option value="1">小一</option><option value="2">小二</option><option value="3">小三</option>
-                        <option value="4">小四</option><option value="5">小五</option><option value="6" selected>小六</option>
+                        <option value="1" selected>中一</option><option value="2">中二</option><option value="3">中三</option>
+                        <option value="4">中四</option><option value="5">中五</option><option value="6">中六</option>
                     </select>
                 </div>
                 <div class="cm-filter-field">
@@ -694,8 +692,8 @@
                 <div class="user-field" id="gradeField">
                     <label><i data-lucide="pin"></i></label>
                     <select id="userGrade">
-                        <option value="1">小一</option><option value="2">小二</option><option value="3">小三</option>
-                        <option value="4">小四</option><option value="5">小五</option><option value="6" selected>小六</option>
+                        <option value="1" selected>中一</option><option value="2">中二</option><option value="3">中三</option>
+                        <option value="4">中四</option><option value="5">中五</option><option value="6">中六</option>
                     </select>
                 </div>
                 <div class="user-field" id="classField">
@@ -769,23 +767,23 @@
         <div class="keysig-solfege-sub-row" id="keysigGradeRow" style="display:none;">
             <span class="practice-diff-label"><i data-lucide="book"></i> 年級程度</span>
             <div class="practice-diff-btns">
-                <button class="ks-grade-btn" data-grade="1">小一</button>
-                <button class="ks-grade-btn" data-grade="2">小二</button>
-                <button class="ks-grade-btn active" data-grade="3">小三</button>
-                <button class="ks-grade-btn" data-grade="4">小四</button>
-                <button class="ks-grade-btn" data-grade="5">小五</button>
-                <button class="ks-grade-btn" data-grade="6">小六</button>
+                <button class="ks-grade-btn" data-grade="1">中一</button>
+                <button class="ks-grade-btn" data-grade="2">中二</button>
+                <button class="ks-grade-btn active" data-grade="3">中三</button>
+                <button class="ks-grade-btn" data-grade="4">中四</button>
+                <button class="ks-grade-btn" data-grade="5">中五</button>
+                <button class="ks-grade-btn" data-grade="6">中六</button>
             </div>
         </div>
         <div class="keysig-solfege-sub-row" id="solfegeGradeRow" style="display:none;">
             <span class="practice-diff-label"><i data-lucide="book"></i> 年級程度</span>
             <div class="practice-diff-btns">
-                <button class="sol-grade-btn" data-grade="1">小一</button>
-                <button class="sol-grade-btn" data-grade="2">小二</button>
-                <button class="sol-grade-btn active" data-grade="3">小三</button>
-                <button class="sol-grade-btn" data-grade="4">小四</button>
-                <button class="sol-grade-btn" data-grade="5">小五</button>
-                <button class="sol-grade-btn" data-grade="6">小六</button>
+                <button class="sol-grade-btn" data-grade="1">中一</button>
+                <button class="sol-grade-btn" data-grade="2">中二</button>
+                <button class="sol-grade-btn active" data-grade="3">中三</button>
+                <button class="sol-grade-btn" data-grade="4">中四</button>
+                <button class="sol-grade-btn" data-grade="5">中五</button>
+                <button class="sol-grade-btn" data-grade="6">中六</button>
             </div>
         </div>
 
@@ -868,7 +866,7 @@
                 <div class="rank-filters">
                     <div class="rank-filter"><label>遊戲</label><select id="rankGameFilter"><option value="game1">一：音名識辨</option><option value="game2">二：節奏識辨</option><option value="game3">三：術語識辨</option><option value="game4">四：樂器識辨</option></select></div>
                     <div class="rank-filter"><label>班別</label><select id="rankClassFilter"><option value="0">全部</option><option value="A">A班</option><option value="B">B班</option><option value="C">C班</option><option value="D">D班</option><option value="E">E班</option><option value="F">F班</option></select></div>
-                    <div class="rank-filter"><label>年級</label><select id="rankGradeFilter"><option value="0">全部</option><option value="1">小一</option><option value="2">小二</option><option value="3">小三</option><option value="4">小四</option><option value="5">小五</option><option value="6" selected>小六</option></select></div>
+                    <div class="rank-filter"><label>年級</label><select id="rankGradeFilter"><option value="0">全部</option><option value="1" selected>中一</option><option value="2">中二</option><option value="3">中三</option><option value="4">中四</option><option value="5">中五</option><option value="6">中六</option></select></div>
                     <div class="rank-filter"><label>模式</label><select id="rankModeFilter"><option value="classic60" selected>高音譜號</option><option value="bass60">低音譜號</option><option value="mixed60">混合譜號</option><option value="noMiss">零失誤挑戰</option><option value="keysig60">調號挑戰</option><option value="solfege60">唱名挑戰</option></select></div>
                     <div class="rank-filter" id="rankDiffFilterWrap" style="display:none;"><label>難度</label><select id="rankDiffFilter"><option value="0">全部難度</option><option value="Easy">Easy</option><option value="Normal">Normal</option><option value="Hard">Hard</option><option value="Expert">Expert</option></select></div>
                 </div>
@@ -1072,38 +1070,38 @@
                 <div class="mode-icon">⏱️</div><div class="mode-name">限時挑戰</div><div class="mode-desc">1分鐘內答最多題，衝排行榜</div>
             </div>
         </div>
-        <!-- 練習模式：年級選擇 (小一至小六) -->
+        <!-- 練習模式：年級選擇 (中一至中六) -->
         <div class="difficulty-selector" id="g3PracticeGradeSelector">
             <div class="diff-title">📚 選擇年級（術語範圍）</div>
             <div class="diff-cards diff-cards-grade" id="g3PracticeGradeCards">
                 <button class="diff-card diff-p1" data-diff="p1">
                     <div class="diff-stars">🌱</div>
-                    <div class="diff-name">小一</div>
+                    <div class="diff-name">中一</div>
                     <div class="diff-desc">基礎力度<br>入門術語</div>
                 </button>
                 <button class="diff-card diff-p2" data-diff="p2">
                     <div class="diff-stars">🌿</div>
-                    <div class="diff-name">小二</div>
+                    <div class="diff-name">中二</div>
                     <div class="diff-desc">力度擴展<br>基礎速度</div>
                 </button>
                 <button class="diff-card diff-p3" data-diff="p3">
                     <div class="diff-stars">🌳</div>
-                    <div class="diff-name">小三</div>
+                    <div class="diff-name">中三</div>
                     <div class="diff-desc">速度+奏法<br>更多術語</div>
                 </button>
                 <button class="diff-card diff-p4" data-diff="p4">
                     <div class="diff-stars">⭐</div>
-                    <div class="diff-name">小四</div>
+                    <div class="diff-name">中四</div>
                     <div class="diff-desc">進階術語<br>基礎調號</div>
                 </button>
                 <button class="diff-card diff-p5" data-diff="p5">
                     <div class="diff-stars">⭐⭐</div>
-                    <div class="diff-name">小五</div>
+                    <div class="diff-name">中五</div>
                     <div class="diff-desc">進階調號<br>記號情緒</div>
                 </button>
                 <button class="diff-card diff-p6" data-diff="p6">
                     <div class="diff-stars">🏆</div>
-                    <div class="diff-name">小六</div>
+                    <div class="diff-name">中六</div>
                     <div class="diff-desc">全部術語<br>極速挑戰</div>
                 </button>
             </div>
@@ -1291,7 +1289,7 @@
                 <h2 class="rank-title">🏆 術語識辨排行榜</h2>
                 <div class="rank-filters">
                     <div class="rank-filter"><label>班別</label><select id="g3RankClass"><option value="0">全部</option><option value="A">A班</option><option value="B">B班</option><option value="C">C班</option><option value="D">D班</option><option value="E">E班</option><option value="F">F班</option></select></div>
-                    <div class="rank-filter"><label>年級</label><select id="g3RankGrade"><option value="0">全部</option><option value="1">小一</option><option value="2">小二</option><option value="3">小三</option><option value="4">小四</option><option value="5">小五</option><option value="6" selected>小六</option></select></div>
+                    <div class="rank-filter"><label>年級</label><select id="g3RankGrade"><option value="0">全部</option><option value="1" selected>中一</option><option value="2">中二</option><option value="3">中三</option><option value="4">中四</option><option value="5">中五</option><option value="6">中六</option></select></div>
                 </div>
                 <div class="student-rank-hint" id="g3RankHint" style="display:none;"></div>
                 <div class="rank-list" id="g3RankList"><div style="text-align:center;padding:30px;color:var(--text-light);font-weight:800;">📡 載入中...</div></div>
@@ -1323,12 +1321,12 @@
         <div class="study-grade-filter">
             <span class="study-grade-label">年級篩選：</span>
             <button class="study-grade-btn active" data-grade="0">全部</button>
-            <button class="study-grade-btn" data-grade="1">小一</button>
-            <button class="study-grade-btn" data-grade="2">小二</button>
-            <button class="study-grade-btn" data-grade="3">小三</button>
-            <button class="study-grade-btn" data-grade="4">小四</button>
-            <button class="study-grade-btn" data-grade="5">小五</button>
-            <button class="study-grade-btn" data-grade="6">小六</button>
+            <button class="study-grade-btn" data-grade="1">中一</button>
+            <button class="study-grade-btn" data-grade="2">中二</button>
+            <button class="study-grade-btn" data-grade="3">中三</button>
+            <button class="study-grade-btn" data-grade="4">中四</button>
+            <button class="study-grade-btn" data-grade="5">中五</button>
+            <button class="study-grade-btn" data-grade="6">中六</button>
         </div>
 
         <!-- Terms grid -->
@@ -1413,7 +1411,7 @@
                 <h2 class="rank-title">🏆 樂器識辨排行榜</h2>
                 <div class="rank-filters">
                     <div class="rank-filter"><label>班別</label><select id="g4RankClass"><option value="0">全部</option><option value="A">A班</option><option value="B">B班</option><option value="C">C班</option><option value="D">D班</option><option value="E">E班</option><option value="F">F班</option></select></div>
-                    <div class="rank-filter"><label>年級</label><select id="g4RankGrade"><option value="0">全部</option><option value="1">小一</option><option value="2">小二</option><option value="3">小三</option><option value="4">小四</option><option value="5">小五</option><option value="6" selected>小六</option></select></div>
+                    <div class="rank-filter"><label>年級</label><select id="g4RankGrade"><option value="0">全部</option><option value="1" selected>中一</option><option value="2">中二</option><option value="3">中三</option><option value="4">中四</option><option value="5">中五</option><option value="6">中六</option></select></div>
                 </div>
                 <div class="student-rank-hint" id="g4RankHint" style="display:none;"></div>
                 <div class="rank-list" id="g4RankList"><div style="text-align:center;padding:30px;color:var(--text-light);font-weight:800;">📡 載入中...</div></div>

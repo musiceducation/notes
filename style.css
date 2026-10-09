@@ -1627,6 +1627,11 @@ canvas { display: block; max-width: 100%; width: 100%; height: auto; }
     box-shadow: var(--ds-shadow-sm);
     align-self: flex-start;
 }
+/* Author display:inline-flex beats the UA [hidden] rule — keep app-only controls hidden on web. */
+.app-only-inline[hidden],
+#hubBackToHomeBtn[hidden] {
+    display: none !important;
+}
 .btn-back-hub:hover:not(:disabled) { background: var(--ds-surface-container-low); box-shadow: var(--ds-shadow-bubbly-up); transform: translateX(-3px) scale(1.03); }
 .btn-back-hub:active:not(:disabled) { transform: scale(0.94); }
 

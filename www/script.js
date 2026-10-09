@@ -4,7 +4,7 @@
     // ==========================================
     const CONFIG = {
         // GAS API (needs to be accessible to all)
-        API_URL: "https://script.google.com/macros/s/AKfycbybYu8OVufu2t8HxB8nvqRG4z2FUGDdkseMpzFAJn2WLiPYJH5JbLqjlpvPuQycUyRu/exec",
+        API_URL: "https://script.google.com/macros/s/AKfycbwBIO95w0KfMxDSjqMza6PyEHxL5iTH-JvEli5_pfopX6GL4Kxnm4BdW5nZMwLU6wU/exec",
         
         NOTE_FREQUENCIES: {
             'C2':65.41,'D2':73.42,'E2':82.41,'F2':87.31,'G2':98.00,'A2':110.00,'B2':123.47,

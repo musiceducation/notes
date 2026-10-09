@@ -1743,14 +1743,16 @@ canvas { display: block; max-width: 100%; width: 100%; height: auto; }
 
 #screen-hub.screen { max-width: min(1180px, 100%); }
 
-/* Hub layout: phone = stacked; iPad+ = aside profile + games */
+/* Hub layout: single column (aside profile card hidden) */
 .hub-layout {
     display: flex;
     flex-direction: column;
     width: 100%;
     gap: 12px;
+    max-width: min(1100px, 100%);
+    margin: 0 auto;
 }
-.hub-aside { display: none; }
+.hub-aside { display: none !important; }
 .hub-main-col {
     display: flex;
     flex-direction: column;
@@ -1821,15 +1823,6 @@ canvas { display: block; max-width: 100%; width: 100%; height: auto; }
     .hub-games-grid { grid-template-columns: 1fr; max-width: 400px; }
 }
 @media (min-width: 768px) {
-    .hub-layout {
-        display: grid;
-        grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
-        gap: 20px;
-        align-items: start;
-        max-width: min(1100px, 100%);
-        margin: 0 auto;
-    }
-    .hub-aside { display: block; position: sticky; top: max(12px, var(--app-safe-top)); }
     .hub-main-col { align-items: stretch; }
     .hub-games-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));

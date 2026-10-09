@@ -1632,6 +1632,11 @@ canvas { display: block; max-width: 100%; width: 100%; height: auto; }
 #hubBackToHomeBtn[hidden] {
     display: none !important;
 }
+/* Classroom rollout: hide 創作工作室 entries. display:flex on these cards beats UA [hidden]. */
+.hub-game-studio[hidden],
+.app-game-row--studio[hidden] {
+    display: none !important;
+}
 .btn-back-hub:hover:not(:disabled) { background: var(--ds-surface-container-low); box-shadow: var(--ds-shadow-bubbly-up); transform: translateX(-3px) scale(1.03); }
 .btn-back-hub:active:not(:disabled) { transform: scale(0.94); }
 

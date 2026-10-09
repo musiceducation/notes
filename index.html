@@ -119,7 +119,8 @@
                         </span>
                         <span class="app-game-row-chevron" aria-hidden="true">›</span>
                     </button>
-                    <button type="button" class="app-game-row app-game-row--studio" data-launch="enterCompositionStudio" role="listitem">
+                    <!-- Classroom rollout: studio entry hidden; screens stay in the page. Remove hidden to restore. -->
+                    <button type="button" class="app-game-row app-game-row--studio" data-launch="enterCompositionStudio" role="listitem" hidden>
                         <span class="app-game-row-icon" aria-hidden="true">✏️</span>
                         <span class="app-game-row-text">
                             <span class="app-game-row-name">創作工作室</span>
@@ -398,7 +399,8 @@
                 <div class="hub-game-desc" aria-hidden="true">觀聲辨樂器<br>認識管弦家族</div>
                 <div class="hub-game-btn" aria-hidden="true">立即挑戰 ▶</div>
             </div>
-            <div class="hub-game-card hub-game-studio" id="enterCompositionStudio" role="button" tabindex="0" aria-label="創作工作室：伴奏與配音創作，播放, 匯出, 分享。按一下開始創作。">
+            <!-- Classroom rollout: hub card hidden; studio screen/logic stay. Remove hidden and restore tabindex="0" to show again. -->
+            <div class="hub-game-card hub-game-studio" id="enterCompositionStudio" role="button" tabindex="-1" hidden aria-label="創作工作室：伴奏與配音創作，播放, 匯出, 分享。按一下開始創作。">
                 <div class="hub-game-tag" aria-hidden="true">創作</div>
                 <div class="hub-game-illust illust-studio" aria-hidden="true">
                     <div class="illust-bg"></div>

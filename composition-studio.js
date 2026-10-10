@@ -974,7 +974,7 @@
         function uploadBackup() {
             var user = getState().currentUser;
             if (!user || !user.name) {
-                _showToast('請先在大廳登入', 'warn');
+                _showToast('請先於主頁登入', 'warn');
                 return Promise.resolve();
             }
             var jsonStr = JSON.stringify(buildJsonPayload());

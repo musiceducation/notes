@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&family=Nunito:wght@400;600;700;800;900&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=4">
     <script src="https://cdn.jsdelivr.net/npm/vexflow@5.0.0/build/cjs/vexflow.min.js" defer></script>
     <script src="https://unpkg.com/lucide@latest" defer></script>
 </head>
@@ -84,7 +84,7 @@
             <section id="appTabGames" class="app-tab-panel active" data-app-tab="games" aria-label="遊戲">
                 <header class="app-panel-head">
                     <h1 class="app-panel-title">互動音樂學習站</h1>
-                    <p class="app-panel-sub">揀一個開始玩</p>
+                    <p class="app-panel-sub">請選擇練習項目</p>
                 </header>
                 <div class="app-game-list" role="list">
                     <button type="button" class="app-game-row app-game-row--1" data-launch="enterGame1" role="listitem">
@@ -99,7 +99,7 @@
                         <span class="app-game-row-icon" aria-hidden="true">🥁</span>
                         <span class="app-game-row-text">
                             <span class="app-game-row-name">節奏識辨</span>
-                            <span class="app-game-row-desc">節拍器 · 打拍子</span>
+                            <span class="app-game-row-desc">節拍器 · 擊拍練習</span>
                         </span>
                         <span class="app-game-row-chevron" aria-hidden="true">›</span>
                     </button>
@@ -139,7 +139,7 @@
                 <div class="app-codex-card">
                     <div class="app-codex-emoji" aria-hidden="true">📚</div>
                     <p class="app-codex-copy">瀏覽弦樂、木管、銅管、敲擊、鍵盤——與遊戲四共用同一套圖鑑。</p>
-                    <button type="button" class="app-home-cta" id="appOpenCodexBtn">打開圖鑑</button>
+                    <button type="button" class="app-home-cta" id="appOpenCodexBtn">開啟圖鑑</button>
                 </div>
             </section>
 
@@ -152,8 +152,8 @@
                     <div class="app-me-top">
                         <div class="app-home-avatar" id="appHomeAvatar" aria-hidden="true">🎵</div>
                         <div>
-                            <div class="app-home-name" id="appHomeName">玩家</div>
-                            <div class="app-home-meta" id="appHomeMeta">App 玩家</div>
+                            <div class="app-home-name" id="appHomeName">學生</div>
+                            <div class="app-home-meta" id="appHomeMeta">學生</div>
                         </div>
                     </div>
                     <div class="app-home-stats">
@@ -219,7 +219,7 @@
         <div class="hub-main-col">
 
         <div class="card hub-login-card web-only-ui">
-            <div class="hub-login-title"><i data-lucide="user"></i> 請選擇你的身份</div>
+            <div class="hub-login-title"><i data-lucide="user"></i> 請選擇學生身份</div>
             <div class="hub-login-row">
                 <div class="hub-field">
                     <label>① 年級</label>
@@ -236,167 +236,52 @@
                 </div>
                 <div class="hub-field hub-field-name" id="hubNameField">
                     <label>③ 選擇姓名</label>
-                    <select id="hubName"><option value="">選擇你的名字</option></select>
+                    <select id="hubName"><option value="">請選擇姓名</option></select>
                 </div>
                 <div class="hub-field">
                     <label>座號</label>
                     <input id="hubSeat" type="text" readonly placeholder="--">
                 </div>
             </div>
-            <div class="hub-player-badge" id="hubPlayerBadge"><i data-lucide="check-circle-2"></i> <span id="hubPlayerBadgeText">已選擇玩家</span></div>
+            <div class="hub-player-badge" id="hubPlayerBadge"><i data-lucide="check-circle-2"></i> <span id="hubPlayerBadgeText">已選擇學生</span></div>
         </div>
 
         <div class="hub-games-grid">
-            <div class="hub-game-card hub-game1" id="enterGame1" role="button" tabindex="0" aria-label="音名識辨：辨認五線譜音名，快速反應取高分。按一下立即挑戰。">
+            <div class="hub-game-card hub-game1" id="enterGame1" role="button" tabindex="0" aria-label="音名識辨：辨認五線譜音名，快速反應取高分。按一下開始。">
                 <div class="hub-game-tag" aria-hidden="true">遊戲一</div>
                 <div class="hub-game-illust illust-1" aria-hidden="true">
-                    <div class="illust-bg"></div>
-                    <svg class="illust-svg" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Staff lines -->
-                        <g opacity="0.25" stroke="#6C4FCC" stroke-width="1.2">
-                            <line x1="20" y1="38" x2="180" y2="38"/><line x1="20" y1="50" x2="180" y2="50"/>
-                            <line x1="20" y1="62" x2="180" y2="62"/><line x1="20" y1="74" x2="180" y2="74"/>
-                            <line x1="20" y1="86" x2="180" y2="86"/>
-                        </g>
-                        <!-- Treble clef -->
-                        <text x="30" y="76" font-size="52" fill="#7B5EE0" opacity="0.7" font-family="serif">𝄞</text>
-                        <!-- Notes -->
-                        <g fill="#8B66FF">
-                            <ellipse cx="90" cy="74" rx="7" ry="5.5" transform="rotate(-12 90 74)"/>
-                            <rect x="96" y="42" width="2.2" height="32" rx="1"/>
-                            <ellipse cx="120" cy="62" rx="7" ry="5.5" transform="rotate(-12 120 62)"/>
-                            <rect x="126" y="30" width="2.2" height="32" rx="1"/>
-                            <ellipse cx="150" cy="50" rx="7" ry="5.5" transform="rotate(-12 150 50)"/>
-                            <rect x="156" y="18" width="2.2" height="32" rx="1"/>
-                        </g>
-                        <!-- Sharp -->
-                        <text x="108" y="48" font-size="16" fill="#9B7FFF" opacity="0.5" font-weight="bold">#</text>
-                        <!-- Flat -->
-                        <text x="140" y="88" font-size="16" fill="#9B7FFF" opacity="0.4" font-weight="bold">♭</text>
-                    </svg>
+                    <img class="illust-img" src="img/ui/hub-3d-game1.jpg" alt="" loading="lazy" decoding="async">
                 </div>
                 <div class="hub-game-name" aria-hidden="true">音名識辨</div>
-                <div class="hub-game-desc" aria-hidden="true">辨認五線譜音名<br>快速反應取高分</div>
-                <div class="hub-game-btn" aria-hidden="true">立即挑戰 ▶</div>
+                <div class="hub-game-desc" aria-hidden="true">辨認五線譜音名 · 限時作答</div>
+                <div class="hub-game-btn" aria-hidden="true">開始 ▶</div>
             </div>
-            <div class="hub-game-card hub-game2" id="enterGame2" role="button" tabindex="0" aria-label="節奏識辨：看清節奏卡，跟著節拍器打拍子。按一下立即挑戰。">
+            <div class="hub-game-card hub-game2" id="enterGame2" role="button" tabindex="0" aria-label="節奏識辨：辨認節奏型，依照節拍器擊拍。按此開始。">
                 <div class="hub-game-tag" aria-hidden="true">遊戲二</div>
                 <div class="hub-game-illust illust-2" aria-hidden="true">
-                    <div class="illust-bg"></div>
-                    <svg class="illust-svg" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Beamed eighth notes group 1 -->
-                        <g fill="#D4782A">
-                            <ellipse cx="50" cy="72" rx="7" ry="5.5" transform="rotate(-12 50 72)"/>
-                            <rect x="56" y="36" width="2.4" height="36" rx="1"/>
-                            <ellipse cx="76" cy="72" rx="7" ry="5.5" transform="rotate(-12 76 72)"/>
-                            <rect x="82" y="36" width="2.4" height="36" rx="1"/>
-                            <rect x="56" y="36" width="28.4" height="3.5" rx="1.5"/>
-                        </g>
-                        <!-- Beamed sixteenth notes group 2 -->
-                        <g fill="#E8944A">
-                            <ellipse cx="110" cy="66" rx="6.5" ry="5" transform="rotate(-12 110 66)"/>
-                            <rect x="116" y="30" width="2.2" height="36" rx="1"/>
-                            <ellipse cx="132" cy="66" rx="6.5" ry="5" transform="rotate(-12 132 66)"/>
-                            <rect x="138" y="30" width="2.2" height="36" rx="1"/>
-                            <rect x="116" y="30" width="24.2" height="3" rx="1.2"/>
-                            <rect x="116" y="37" width="24.2" height="3" rx="1.2"/>
-                        </g>
-                        <!-- Metronome pendulum -->
-                        <g opacity="0.3">
-                            <polygon points="160,90 170,90 165,30" fill="#D4782A" opacity="0.25"/>
-                            <line x1="165" y1="86" x2="158" y2="42" stroke="#D4782A" stroke-width="2" stroke-linecap="round"/>
-                            <circle cx="158" cy="42" r="4" fill="#E8944A"/>
-                        </g>
-                        <!-- Beat dots -->
-                        <g opacity="0.3">
-                            <circle cx="40" cy="100" r="3.5" fill="#D4782A"/><circle cx="56" cy="100" r="3.5" fill="#E8944A"/>
-                            <circle cx="72" cy="100" r="3.5" fill="#D4782A"/><circle cx="88" cy="100" r="3.5" fill="#E8944A"/>
-                        </g>
-                    </svg>
+                    <img class="illust-img" src="img/ui/hub-3d-game2.jpg" alt="" loading="lazy" decoding="async">
                 </div>
                 <div class="hub-game-name" aria-hidden="true">節奏識辨</div>
-                <div class="hub-game-desc" aria-hidden="true">看清節奏卡<br>跟著節拍器打拍子</div>
-                <div class="hub-game-btn" aria-hidden="true">立即挑戰 ▶</div>
+                <div class="hub-game-desc" aria-hidden="true">辨認節奏型 · 依照節拍器擊拍</div>
+                <div class="hub-game-btn" aria-hidden="true">開始 ▶</div>
             </div>
-            <div class="hub-game-card hub-game3" id="enterGame3" role="button" tabindex="0" aria-label="術語識辨：認識音樂術語記號，搶快作答得獎勵分。按一下立即挑戰。">
+            <div class="hub-game-card hub-game3" id="enterGame3" role="button" tabindex="0" aria-label="術語識辨：辨認音樂術語及記號，限時作答可得加分。按此開始。">
                 <div class="hub-game-tag" aria-hidden="true">遊戲三</div>
                 <div class="hub-game-illust illust-3" aria-hidden="true">
-                    <div class="illust-bg"></div>
-                    <svg class="illust-svg" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Big f (forte) -->
-                        <text x="36" y="82" font-size="56" fill="#0088CC" opacity="0.6" font-family="'Times New Roman',serif" font-style="italic" font-weight="bold">f</text>
-                        <!-- p (piano) -->
-                        <text x="88" y="80" font-size="44" fill="#4DC4E8" opacity="0.5" font-family="'Times New Roman',serif" font-style="italic" font-weight="bold">p</text>
-                        <!-- Crescendo hairpin -->
-                        <g stroke="#0088CC" stroke-width="2.5" stroke-linecap="round" opacity="0.4">
-                            <line x1="120" y1="56" x2="178" y2="42"/>
-                            <line x1="120" y1="56" x2="178" y2="70"/>
-                        </g>
-                        <!-- ff small -->
-                        <text x="148" y="100" font-size="22" fill="#4DC4E8" opacity="0.35" font-family="'Times New Roman',serif" font-style="italic" font-weight="bold">ff</text>
-                        <!-- mp small -->
-                        <text x="24" y="36" font-size="18" fill="#0088CC" opacity="0.25" font-family="'Times New Roman',serif" font-style="italic">mp</text>
-                        <!-- Accent mark -->
-                        <g stroke="#4DC4E8" stroke-width="2" stroke-linecap="round" opacity="0.3">
-                            <line x1="140" y1="88" x2="147" y2="82"/>
-                            <line x1="147" y1="82" x2="140" y2="76"/>
-                        </g>
-                        <!-- Sparkle dots -->
-                        <circle cx="170" cy="24" r="2.5" fill="#4DC4E8" opacity="0.3"/>
-                        <circle cx="108" cy="20" r="2" fill="#0088CC" opacity="0.25"/>
-                        <circle cx="82" cy="100" r="2" fill="#4DC4E8" opacity="0.2"/>
-                    </svg>
+                    <img class="illust-img" src="img/ui/hub-3d-game3.jpg" alt="" loading="lazy" decoding="async">
                 </div>
                 <div class="hub-game-name" aria-hidden="true">術語識辨</div>
-                <div class="hub-game-desc" aria-hidden="true">認識音樂術語記號<br>搶快作答得獎勵分</div>
-                <div class="hub-game-btn" aria-hidden="true">立即挑戰 ▶</div>
+                <div class="hub-game-desc" aria-hidden="true">辨認音樂術語及記號 · 限時作答可得加分</div>
+                <div class="hub-game-btn" aria-hidden="true">開始 ▶</div>
             </div>
-            <div class="hub-game-card hub-game4" id="enterGame4" role="button" tabindex="0" aria-label="樂器識辨：觀聲辨樂器，認識管弦家族。按一下立即挑戰。">
+            <div class="hub-game-card hub-game4" id="enterGame4" role="button" tabindex="0" aria-label="樂器識辨：觀聲辨樂器，認識管弦家族。按一下開始。">
                 <div class="hub-game-tag" aria-hidden="true">遊戲四</div>
                 <div class="hub-game-illust illust-4" aria-hidden="true">
-                    <div class="illust-bg"></div>
-                    <svg class="illust-svg" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Violin body -->
-                        <g transform="translate(30,16) scale(0.85)" fill="#00B87A" opacity="0.5">
-                            <ellipse cx="32" cy="28" rx="18" ry="22"/>
-                            <ellipse cx="32" cy="72" rx="20" ry="24"/>
-                            <rect x="24" y="28" width="16" height="44" rx="6"/>
-                            <!-- f-holes -->
-                            <ellipse cx="26" cy="48" rx="2.5" ry="8" fill="#EEFAF5" opacity="0.8"/>
-                            <ellipse cx="38" cy="48" rx="2.5" ry="8" fill="#EEFAF5" opacity="0.8"/>
-                            <!-- Neck -->
-                            <rect x="29" y="-2" width="6" height="32" rx="2"/>
-                        </g>
-                        <!-- Trumpet -->
-                        <g transform="translate(90,28)" fill="#00D28E" opacity="0.45">
-                            <rect x="0" y="20" width="55" height="8" rx="4"/>
-                            <rect x="0" y="14" width="8" height="20" rx="3"/>
-                            <!-- Bell -->
-                            <path d="M55,12 Q68,12 68,24 Q68,36 55,36 Z"/>
-                            <!-- Valves -->
-                            <rect x="18" y="14" width="5" height="6" rx="2" fill="#00B87A" opacity="0.7"/>
-                            <rect x="28" y="12" width="5" height="8" rx="2" fill="#00B87A" opacity="0.7"/>
-                            <rect x="38" y="14" width="5" height="6" rx="2" fill="#00B87A" opacity="0.7"/>
-                        </g>
-                        <!-- Piano keys -->
-                        <g transform="translate(100,70)" opacity="0.35">
-                            <rect x="0" y="0" width="14" height="36" rx="2" fill="#00D28E" stroke="#00B87A" stroke-width="1"/>
-                            <rect x="16" y="0" width="14" height="36" rx="2" fill="#00D28E" stroke="#00B87A" stroke-width="1"/>
-                            <rect x="32" y="0" width="14" height="36" rx="2" fill="#00D28E" stroke="#00B87A" stroke-width="1"/>
-                            <rect x="48" y="0" width="14" height="36" rx="2" fill="#00D28E" stroke="#00B87A" stroke-width="1"/>
-                            <!-- Black keys -->
-                            <rect x="10" y="0" width="9" height="22" rx="1.5" fill="#008F5C"/>
-                            <rect x="26" y="0" width="9" height="22" rx="1.5" fill="#008F5C"/>
-                            <rect x="42" y="0" width="9" height="22" rx="1.5" fill="#008F5C"/>
-                        </g>
-                        <!-- Music notes floating -->
-                        <text x="72" y="18" font-size="16" fill="#00B87A" opacity="0.3">♪</text>
-                        <text x="168" y="40" font-size="14" fill="#00D28E" opacity="0.25">♫</text>
-                    </svg>
+                    <img class="illust-img" src="img/ui/hub-3d-game4.jpg" alt="" loading="lazy" decoding="async">
                 </div>
                 <div class="hub-game-name" aria-hidden="true">樂器識辨</div>
-                <div class="hub-game-desc" aria-hidden="true">觀聲辨樂器<br>認識管弦家族</div>
-                <div class="hub-game-btn" aria-hidden="true">立即挑戰 ▶</div>
+                <div class="hub-game-desc" aria-hidden="true">聽音辨認樂器 · 認識管弦樂家族</div>
+                <div class="hub-game-btn" aria-hidden="true">開始 ▶</div>
             </div>
             <!-- Classroom rollout: hub card hidden; studio screen/logic stay. Remove hidden and restore tabindex="0" to show again. -->
             <div class="hub-game-card hub-game-studio" id="enterCompositionStudio" role="button" tabindex="-1" hidden aria-label="創作工作室：伴奏與配音創作，播放, 匯出, 分享。按一下開始創作。">
@@ -440,7 +325,7 @@
     <!-- 創作工作室 (Melody + Rhythm composition) -->
     <!-- ===================================== -->
     <div id="screen-composition-studio" class="screen">
-        <button class="btn-back-hub" id="studioBackBtn" type="button">← 返回大廳</button>
+        <button class="btn-back-hub" id="studioBackBtn" type="button">← 返回主頁</button>
         <h1 class="game-title studio-main-title"><span class="title-icon">✏️</span> 創作工作室</h1>
         <p class="studio-sub studio-sub--compact">高音譜、4/4 · 節奏／旋律 · 試聽、下載或上傳備份</p>
 
@@ -480,7 +365,7 @@
             <div class="studio-vf-wrap" id="studioRhythmVf"></div>
             <p class="studio-rhythm-status" id="studioRhythmStatus">本小節已用 0 / 4 拍 · 共 0 小節</p>
             <p class="studio-hint studio-hint--tight" id="studioRhythmHint">點選節奏塊加入；附點與切分音須對準拍點。</p>
-            <button type="button" class="btn-studio btn-studio-soft studio-teach-btn" id="studioTeachRhythmBtn" title="看圖學節奏">🎵 看圖學節奏</button>
+            <button type="button" class="btn-studio btn-studio-soft studio-teach-btn" id="studioTeachRhythmBtn" title="節奏圖解">🎵 節奏圖解</button>
             <div class="studio-token-palette" id="studioRhythmPalette"></div>
         </div>
 
@@ -533,12 +418,12 @@
     <!-- 玩家個人檔案 (Player Profile)          -->
     <!-- ===================================== -->
     <div id="screen-profile" class="screen">
-        <button class="btn-back-hub" id="profileBackBtn">← 返回大廳</button>
+        <button class="btn-back-hub" id="profileBackBtn">← 返回主頁</button>
         <div class="profile-header">
             <div class="profile-avatar" id="profileAvatar">♩</div>
             <div class="profile-info">
-                <div class="profile-name" id="profileName">玩家名稱</div>
-                <div class="profile-sig" id="profileSig">點擊編輯個人簽名...</div>
+                <div class="profile-name" id="profileName">學生姓名</div>
+                <div class="profile-sig" id="profileSig">按此編輯簽名</div>
                 <div class="profile-meta">
                     <span class="profile-id" id="profileId">ID: ---</span>
                     <span class="profile-since" id="profileSince">加入日期: ---</span>
@@ -552,12 +437,12 @@
             </div>
             <div class="profile-exp-text" id="profileExpText">0 / 100 EXP</div>
         </div>
-        <div class="profile-playtime" id="profilePlaytime">🕐 累計遊戲時長：0 分鐘</div>
+        <div class="profile-playtime" id="profilePlaytime">🕐 累計練習時間：0 分鐘</div>
 
         <div class="profile-card">
         <div class="profile-section-title"><i data-lucide="bar-chart-2"></i> 綜合數據</div>
         <div class="profile-stats-grid" id="profileStatsGrid">
-            <div class="profile-stat stat-accent-1"><div class="profile-stat-icon">🎮</div><div class="profile-stat-val" id="psTotalPlayed">0</div><div class="profile-stat-label">總遊戲次數</div></div>
+            <div class="profile-stat stat-accent-1"><div class="profile-stat-icon">🎮</div><div class="profile-stat-val" id="psTotalPlayed">0</div><div class="profile-stat-label">練習次數</div></div>
             <div class="profile-stat stat-accent-2"><div class="profile-stat-icon">✅</div><div class="profile-stat-val" id="psCleared">0</div><div class="profile-stat-label">通關次數</div></div>
             <div class="profile-stat stat-accent-3"><div class="profile-stat-icon">⭐</div><div class="profile-stat-val" id="psTotalScore">0</div><div class="profile-stat-label">總獲得分數</div></div>
             <div class="profile-stat stat-accent-4"><div class="profile-stat-icon">🎯</div><div class="profile-stat-val" id="psAvgAccuracy">0%</div><div class="profile-stat-label">平均準確率</div></div>
@@ -578,7 +463,7 @@
         </div>
 
         <div class="profile-card">
-        <div class="profile-section-title">🎮 各遊戲最高分</div>
+        <div class="profile-section-title">🎮 各項最高分</div>
         <div class="profile-game-bests" id="profileGameBests">
             <div class="profile-game-best pgb-game1"><div class="pgb-top"><span class="pgb-icon">♩</span><span class="pgb-name">音名識辨</span></div><div class="pgb-score" id="pgbGame1">---</div></div>
             <div class="profile-game-best pgb-game2"><div class="pgb-top"><span class="pgb-icon">♬</span><span class="pgb-name">節奏識辨</span></div><div class="pgb-score" id="pgbGame2">---</div></div>
@@ -590,7 +475,7 @@
         <div class="profile-card">
         <div class="profile-section-title"><i data-lucide="trending-up"></i> 進步趨勢</div>
         <div id="profileProgressTrend" class="profile-progress-trend"></div>
-        <div class="profile-section-subtitle">最近遊玩</div>
+        <div class="profile-section-subtitle">近期紀錄</div>
         <div id="profileRecentGames" class="profile-recent-games"></div>
         </div>
 
@@ -601,7 +486,7 @@
 
         <div class="profile-sig-section">
             <div class="profile-section-title"><i data-lucide="pencil"></i> 個人簽名</div>
-            <input type="text" class="profile-sig-input" id="profileSigInput" maxlength="30" placeholder="寫一句你的座右銘...">
+            <input type="text" class="profile-sig-input" id="profileSigInput" maxlength="30" placeholder="請輸入座右銘">
             <button class="btn-action profile-sig-save" id="profileSigSave"><i data-lucide="save"></i> 儲存</button>
         </div>
     </div>
@@ -610,7 +495,7 @@
     <!-- 同學名冊 (Classmates Directory)       -->
     <!-- ===================================== -->
     <div id="screen-classmates" class="screen">
-        <button class="btn-back-hub" id="classmatesBackBtn">← 返回大廳</button>
+        <button class="btn-back-hub" id="classmatesBackBtn">← 返回主頁</button>
         <div class="cm-header-card">
             <h2 class="social-title">👥 同學名冊</h2>
             <div class="social-subtitle">查看同班同學的音樂檔案</div>
@@ -679,16 +564,16 @@
     <!-- 介面一：大廳與設定 (Setup Screen) -->
     <!-- ===================================== -->
     <div id="screen-setup" class="screen">
-        <button class="btn-back-hub" id="backToHubFromSetup">← 返回大廳</button>
+        <button class="btn-back-hub" id="backToHubFromSetup">← 返回主頁</button>
         <div>
-            <h1 class="game-title">🎵 音名識辨遊戲</h1>
-            <div class="game-subtitle">邊玩邊學 認識音符</div>
+            <h1 class="game-title">🎵 音名識辨</h1>
+            <div class="game-subtitle">辨認五線譜音名</div>
         </div>
 
         <!-- Hidden: synced from hub login -->
         <div class="card" id="setupUserCard" style="display:none;">
             <div class="user-info-area">
-                <div class="user-field" id="nameField"><label><i data-lucide="user"></i></label><select id="userName"><option value="">選擇你的名字</option></select></div>
+                <div class="user-field" id="nameField"><label><i data-lucide="user"></i></label><select id="userName"><option value="">請選擇姓名</option></select></div>
                 <div class="user-field" id="gradeField">
                     <label><i data-lucide="pin"></i></label>
                     <select id="userGrade">
@@ -710,19 +595,19 @@
 
         <div class="mode-cards" id="modeCards">
             <div class="mode-card practice active" data-mode="practice">
-                <div class="mode-icon">📝</div><div class="mode-name">練習模式</div><div class="mode-desc">不限時間，慢慢學</div>
+                <div class="mode-icon">📝</div><div class="mode-name">練習模式</div><div class="mode-desc">不限時，可反覆練習</div>
             </div>
             <div class="mode-card challenge" data-mode="classic60">
-                <div class="mode-icon">⏱️</div><div class="mode-name">1分鐘挑戰</div><div class="mode-desc">限時 1 分鐘，衝排行榜</div>
+                <div class="mode-icon">⏱️</div><div class="mode-name">1分鐘挑戰</div><div class="mode-desc">限時一分鐘，計入排行榜</div>
             </div>
             <div class="mode-card challenge" data-mode="noMiss">
-                <div class="mode-icon"><i data-lucide="flame"></i></div><div class="mode-name">零失誤挑戰</div><div class="mode-desc">不限時 · 錯一題就結束 ×1.5</div>
+                <div class="mode-icon"><i data-lucide="flame"></i></div><div class="mode-name">零失誤挑戰</div><div class="mode-desc">不限時 · 答錯一題即結束（分數 ×1.5）</div>
             </div>
             <div class="mode-card keysig" data-mode="keysig_practice">
                 <div class="mode-icon">𝄞</div><div class="mode-name">調號辨別</div><div class="mode-desc">認識不同調號</div>
             </div>
             <div class="mode-card solfege" data-mode="solfege_practice">
-                <div class="mode-icon"><i data-lucide="mic"></i></div><div class="mode-name">唱名辨別</div><div class="mode-desc">看譜說唱名（首調）</div>
+                <div class="mode-icon"><i data-lucide="mic"></i></div><div class="mode-name">唱名辨別</div><div class="mode-desc">視譜辨認唱名（首調）</div>
             </div>
         </div>
 
@@ -742,7 +627,7 @@
                 <button class="diff-btn" data-diff="2">初級</button>
                 <button class="diff-btn active" data-diff="3">中級</button>
                 <button class="diff-btn" data-diff="4">進階</button>
-                <button class="diff-btn" data-diff="5">全力</button>
+                <button class="diff-btn" data-diff="5">最高</button>
             </div>
         </div>
 
@@ -786,7 +671,7 @@
             </div>
         </div>
 
-        <button class="btn-start" id="startBtn"><i data-lucide="play-circle"></i> 準備好了，開始！</button>
+        <button class="btn-start" id="startBtn"><i data-lucide="play-circle"></i> 開始練習</button>
         <button class="btn-view-ranks" id="viewRanksBtn"><i data-lucide="trophy"></i> 查看排行榜</button>
     </div>
 
@@ -796,7 +681,7 @@
     <div id="screen-game" class="screen">
         <div class="card" style="padding: 10px 16px;">
             <div class="game-header-bar">
-                <div class="user-badge" id="inGameUser">👋 準備好了嗎...</div>
+                <div class="user-badge" id="inGameUser">👋 請開始</div>
                 <div class="progress-area">
                     <div class="progress-bar"><div class="progress-fill" id="timeProgress" style="width: 100%;"></div></div>
                     <div class="stat-badge time-badge">⏱️ <span id="timeDisplay">--</span></div>
@@ -856,7 +741,7 @@
                 <div class="report-grid" id="reportGrid"></div>
                 <div id="reportWeakness" class="weakness-box"></div>
                 <div id="reportHistory"></div>
-                <button class="btn-restart-large" id="backToSetupBtn">🔄 再玩一次！</button>
+                <button class="btn-restart-large" id="backToSetupBtn">🔄 再次練習</button>
             </div>
 
             <!-- 右側排行區 -->
@@ -874,7 +759,7 @@
                     <div style="text-align:center; padding:30px; color:var(--text-light); font-weight:800;">📡 載入中...</div>
                 </div>
                 <div style="text-align:center; font-size:0.8rem; color:#888;">排名即時更新 📡</div>
-                <button class="btn-restart-large" id="rankBackBtn" style="margin-top:8px;">🏠 返回大廳</button>
+                <button class="btn-restart-large" id="rankBackBtn" style="margin-top:8px;">🏠 返回主頁</button>
             </div>
             
         </div>
@@ -884,33 +769,33 @@
     <!-- 遊戲二：模式選擇 (Game 2 Setup)         -->
     <!-- ===================================== -->
     <div id="screen-g2-setup" class="screen">
-        <button class="btn-back-hub" id="g2BackToHubFromSetup">← 返回大廳</button>
+        <button class="btn-back-hub" id="g2BackToHubFromSetup">← 返回主頁</button>
         <div>
             <h1 class="game-title">🥁 節奏識辨</h1>
-            <div class="game-subtitle">看清節奏卡 · 跟着節拍器打拍子</div>
+            <div class="game-subtitle">辨認節奏型 · 依照節拍器擊拍</div>
         </div>
         <div class="card" id="g2PlayerCard" style="padding:14px 20px; text-align:center;">
             <div class="hub-player-badge show" id="g2PlayerBadgeDisplay">👋 <span id="g2PlayerBadgeText">準備中...</span></div>
         </div>
         <div class="mode-cards" id="g2ModeCards">
             <div class="mode-card cards active" data-mode="practice" id="g2ModePractice">
-                <div class="mode-icon">🎴</div><div class="mode-name">自由練習</div><div class="mode-desc">自選節奏卡，慢慢練</div>
+                <div class="mode-icon">🎴</div><div class="mode-name">自由練習</div><div class="mode-desc">自選節奏卡，不限時練習</div>
             </div>
             <div class="mode-card challenge" data-mode="challenge" id="g2ModeChallenge">
-                <div class="mode-icon">⭐</div><div class="mode-name">節奏挑戰</div><div class="mode-desc">隨機節奏，衝排行榜</div>
+                <div class="mode-icon">⭐</div><div class="mode-name">節奏挑戰</div><div class="mode-desc">隨機節奏，計入排行榜</div>
             </div>
             <div class="mode-card onemin" data-mode="1min" id="g2Mode1Min">
-                <div class="mode-icon">⏱️</div><div class="mode-name">1分鐘挑戰</div><div class="mode-desc">看譜填空，限時搶分</div>
+                <div class="mode-icon">⏱️</div><div class="mode-name">1分鐘挑戰</div><div class="mode-desc">視譜填寫，限時作答</div>
             </div>
             <div class="mode-card duration" data-mode="duration" id="g2ModeDuration">
-                <div class="mode-icon">🎵</div><div class="mode-name">時值辨別</div><div class="mode-desc">看圖辨音符，限時搶分</div>
+                <div class="mode-icon">🎵</div><div class="mode-name">時值辨別</div><div class="mode-desc">辨認音符時值，限時作答</div>
                 <div class="mode-sub-btns">
-                    <button class="mode-sub-btn" id="durHelpBtn" title="遊戲玩法">📖 玩法</button>
+                    <button class="mode-sub-btn" id="durHelpBtn" title="練習說明">說明</button>
                     <button class="mode-sub-btn" id="durRefBtn" title="音符休止符時值">🎵 時值表</button>
                 </div>
             </div>
         </div>
-        <button class="btn-start" id="g2StartBtn">🚀 準備好了，開始！</button>
+        <button class="btn-start" id="g2StartBtn">🚀 開始練習</button>
         <button class="btn-view-ranks" id="g2SetupViewRanks">🏆 查看排行榜</button>
     </div>
 
@@ -919,7 +804,7 @@
     <!-- 遊戲二：節奏卡 — 關卡選擇               -->
     <!-- ===================================== -->
     <div id="screen-rc-levels" class="screen" style="gap:8px;">
-        <button class="btn-back-hub" id="rcLevelsBack">← 返回大廳</button>
+        <button class="btn-back-hub" id="rcLevelsBack">← 返回主頁</button>
         <h1 class="game-title" style="font-size:1.6rem;margin:0;filter:none;">🎴 節奏識辨</h1>
         <div class="rc-filter-row" style="margin:0;">
             <span class="hub-player-badge show" id="rcPlayerBadge" style="font-size:0.72rem;padding:3px 10px;border-radius:20px;">👋 <span id="rcPlayerBadgeText">準備中...</span></span>
@@ -1001,7 +886,7 @@
                 </div>
                 <div class="rc-metro-base"></div>
             </div>
-            <div class="rc-metronome-text" id="rcMetronomeText">跟着節拍器</div>
+            <div class="rc-metronome-text" id="rcMetronomeText">依照節拍器</div>
         </div>
         <div class="rc-combo-display" id="rcComboDisplay"></div>
         <div class="rc-canvas-wrap">
@@ -1013,7 +898,7 @@
             </div>
         </div>
         <div class="rc-judgment-wrap"><div class="rc-judgment-flash" id="rcJudgmentFlash"></div></div>
-        <button class="rc-hit-pad" id="rcHitPad" aria-label="點擊打拍">
+        <button class="rc-hit-pad" id="rcHitPad" aria-label="按此擊拍">
             <span class="rc-hit-emoji" id="rcHitEmoji">🥁</span>
             <span class="rc-hit-text">藍線到音符就拍！</span>
         </button>
@@ -1053,20 +938,20 @@
     <!-- 遊戲三：模式選擇 (Game 3 Setup)         -->
     <!-- ===================================== -->
     <div id="screen-g3-setup" class="screen">
-        <button class="btn-back-hub" id="g3BackToHubFromSetup">← 返回大廳</button>
+        <button class="btn-back-hub" id="g3BackToHubFromSetup">← 返回主頁</button>
         <div>
             <h1 class="game-title">📖 術語識辨</h1>
-            <div class="game-subtitle">認識音樂術語記號 · 搶快作答得獎勵分</div>
+            <div class="game-subtitle">辨認音樂術語及記號 · 限時作答可得加分</div>
         </div>
         <div class="card" id="g3PlayerCard" style="padding:14px 20px; text-align:center;">
             <div class="hub-player-badge show" id="g3PlayerBadgeDisplay">👋 <span id="g3PlayerBadgeText">準備中...</span></div>
         </div>
         <div class="mode-cards" id="g3ModeCards">
             <div class="mode-card practice active" data-mode="practice" id="g3ModePractice">
-                <div class="mode-icon">📝</div><div class="mode-name">練習模式</div><div class="mode-desc">不限時間，慢慢學</div>
+                <div class="mode-icon">📝</div><div class="mode-name">練習模式</div><div class="mode-desc">不限時，可反覆練習</div>
             </div>
             <div class="mode-card challenge" data-mode="challenge" id="g3ModeChallenge">
-                <div class="mode-icon">⏱️</div><div class="mode-name">限時挑戰</div><div class="mode-desc">1分鐘內答最多題，衝排行榜</div>
+                <div class="mode-icon">⏱️</div><div class="mode-name">限時挑戰</div><div class="mode-desc">限時一分鐘，計入排行榜</div>
             </div>
         </div>
         <!-- 練習模式：年級選擇 (中一至中六) -->
@@ -1076,12 +961,12 @@
                 <button class="diff-card diff-p1" data-diff="p1">
                     <div class="diff-stars">🌱</div>
                     <div class="diff-name">中一</div>
-                    <div class="diff-desc">基礎力度<br>入門術語</div>
+                    <div class="diff-desc">全部術語<br>最高程度</div>
                 </button>
                 <button class="diff-card diff-p2" data-diff="p2">
                     <div class="diff-stars">🌿</div>
                     <div class="diff-name">中二</div>
-                    <div class="diff-desc">力度擴展<br>基礎速度</div>
+                    <div class="diff-desc">全部術語<br>最高程度</div>
                 </button>
                 <button class="diff-card diff-p3" data-diff="p3">
                     <div class="diff-stars">🌳</div>
@@ -1132,7 +1017,7 @@
             </div>
         </div>
         <button class="btn-view-ranks" id="g3StudyBtn" style="background:linear-gradient(135deg,#E8F4FF,#F0E8FF);color:var(--primary-blue-dark);border-color:rgba(0,166,237,0.35);box-shadow:0 5px 0 rgba(0,166,237,0.25);">📚 先看術語表溫習</button>
-        <button class="btn-start" id="g3StartBtn">🚀 準備好了，開始！</button>
+        <button class="btn-start" id="g3StartBtn">🚀 開始練習</button>
         <button class="btn-view-ranks" id="g3SetupViewRanks">🏆 查看術語識辨排行榜</button>
     </div>
 
@@ -1165,10 +1050,10 @@
         </div>
         <div class="rchal-tap" id="rchalTap">
             <span class="rchal-tap-emoji">🥁</span>
-            <span class="rchal-tap-label">拍打這裡</span>
+            <span class="rchal-tap-label">請在此擊拍</span>
         </div>
         <div class="rchal-btn-row" id="rchalBtnRow">
-            <button class="btn-start" id="rchalStartBtn" style="display:none;">🥁 開始！</button>
+            <button class="btn-start" id="rchalStartBtn" style="display:none;">開始</button>
         </div>
         <div class="rchal-status" id="rchalStatus"></div>
         <div class="rchal-result" id="rchalResult" style="display:none;"></div>
@@ -1186,24 +1071,24 @@
     <div id="screen-g2-duration" class="screen om-screen"></div>
 
     <!-- ===================================== -->
-    <!-- 時值辨別：遊戲玩法 Modal              -->
+    <!-- 時值辨別：練習說明 Modal              -->
     <!-- ===================================== -->
-    <div id="durHelpModal" class="tutorial-modal" role="dialog" aria-modal="true" aria-label="時值辨別玩法" style="display:none">
+    <div id="durHelpModal" class="tutorial-modal" role="dialog" aria-modal="true" aria-label="時值辨別說明" style="display:none">
         <div class="tutorial-box">
             <div class="tut-header">
-                <h3 style="margin:0;font-size:1.05rem;font-weight:900;">🎵 時值辨別 — 遊戲玩法</h3>
+                <h3 style="margin:0;font-size:1.05rem;font-weight:900;">🎵 時值辨別 — 練習說明</h3>
                 <button class="tut-close" id="durHelpClose" aria-label="關閉">✕</button>
             </div>
             <div class="tut-visual tut-steps-visual">
                 <ol class="tut-steps">
-                    <li style="background:#FFF0F8; border-left:4px solid #FF65A3;">👀 <strong>看清</strong>畫面中央的音符或休止符圖片</li>
+                    <li style="background:#FFF0F8; border-left:4px solid #FF65A3;"><strong>辨認</strong>畫面中央的音符或休止符圖片</li>
                     <li style="background:#FFF5EC; border-left:4px solid #FF8C42;">🎯 <strong>快速選擇</strong>正確的音符/休止符名稱</li>
-                    <li style="background:#F0F9FF; border-left:4px solid #00A6ED;">⏱️ 限時 <strong>60 秒</strong>，答對愈多分數愈高！</li>
-                    <li style="background:#F3EEFF; border-left:4px solid #8B66FF;">✅ 答對 <strong>+100 分</strong>，答錯不扣分繼續加油</li>
-                    <li style="background:#EEFAF6; border-left:4px solid #00B89F;">🏆 挑戰結束後可上傳<strong>排行榜</strong>，同班競技！</li>
+                    <li style="background:#F0F9FF; border-left:4px solid #00A6ED;">⏱️ 限時 <strong>60 秒</strong>，答對題數愈多，得分愈高。</li>
+                    <li style="background:#F3EEFF; border-left:4px solid #8B66FF;">✅ 答對 <strong>+100 分</strong>，答錯不扣分，可繼續作答</li>
+                    <li style="background:#EEFAF6; border-left:4px solid #00B89F;">🏆 挑戰結束後可上傳<strong>排行榜</strong>，可與同班同學比較成績。</li>
                 </ol>
             </div>
-            <p class="tut-text">💡 提示：開始前可以先按「🎵 時值表」查看音符休止符對照表！</p>
+            <p class="tut-text">💡 提示：開始前可查閱「時值表」。</p>
         </div>
     </div>
 
@@ -1269,7 +1154,7 @@
         <div class="message-box" id="g3Message">📖 準備好就點選答案！</div>
         <div class="action-row">
             <button class="btn-action" id="g3EndBtn">🏁 結束遊戲</button>
-            <button class="btn-action" id="g3BackBtn">🔙 返回大廳</button>
+            <button class="btn-action" id="g3BackBtn">🔙 返回主頁</button>
         </div>
     </div>
 
@@ -1331,14 +1216,14 @@
         <!-- Terms grid -->
         <div class="study-terms-grid" id="g3TermsGrid"></div>
 
-        <button class="btn-start" id="g3StudyStartBtn">🚀 返回設定，開始挑戰！</button>
+        <button class="btn-start" id="g3StudyStartBtn">🚀 返回設定並開始</button>
     </div>
 
     <!-- ===================================== -->
     <!-- 遊戲四：樂器識辨 設定 (Game 4 Setup)    -->
     <!-- ===================================== -->
     <div id="screen-g4-setup" class="screen">
-        <button class="btn-back-hub" id="g4BackToHubFromSetup">← 返回大廳</button>
+        <button class="btn-back-hub" id="g4BackToHubFromSetup">← 返回主頁</button>
         <div>
             <h1 class="game-title">🎻 樂器識辨</h1>
             <div class="game-subtitle">聽聲辨樂器 · 認識管弦家族</div>
@@ -1348,15 +1233,15 @@
         </div>
         <div class="mode-cards" id="g4ModeCards">
             <div class="mode-card practice active" data-mode="practice" id="g4ModePractice">
-                <div class="mode-icon">📝</div><div class="mode-name">練習模式</div><div class="mode-desc">不限時間，慢慢學</div>
+                <div class="mode-icon">📝</div><div class="mode-name">練習模式</div><div class="mode-desc">不限時，可反覆練習</div>
             </div>
             <div class="mode-card challenge" data-mode="challenge" id="g4ModeChallenge">
-                <div class="mode-icon">⏱️</div><div class="mode-name">限時挑戰</div><div class="mode-desc">1分鐘內答最多題，衝排行榜</div>
+                <div class="mode-icon">⏱️</div><div class="mode-name">限時挑戰</div><div class="mode-desc">限時一分鐘，計入排行榜</div>
             </div>
         </div>
 
         <button class="btn-view-ranks" id="g4StudyBtn" style="background:linear-gradient(135deg,#EEFAF5,#E8FFF5);color:#00865a;border-color:rgba(0,210,142,0.35);box-shadow:0 5px 0 rgba(0,210,142,0.25);">📚 先看樂器圖鑑</button>
-        <button class="btn-start" id="g4StartBtn">🚀 準備好了，開始！</button>
+        <button class="btn-start" id="g4StartBtn">🚀 開始練習</button>
         <button class="btn-view-ranks" id="g4SetupViewRanks">🏆 查看樂器識辨排行榜</button>
     </div>
 
@@ -1387,7 +1272,7 @@
         <div class="message-box" id="g4Message">🎻 準備好就點選答案！</div>
         <div class="action-row">
             <button class="btn-action" id="g4EndBtn">🏁 結束遊戲</button>
-            <button class="btn-action" id="g4BackBtn">🔙 返回大廳</button>
+            <button class="btn-action" id="g4BackBtn">🔙 返回主頁</button>
         </div>
     </div>
 
@@ -1447,7 +1332,7 @@
         <!-- Instruments grid -->
         <div class="g4-study-grid" id="g4StudyGrid"></div>
 
-        <button class="btn-start" id="g4StudyStartBtn">🚀 返回設定，開始挑戰！</button>
+        <button class="btn-start" id="g4StudyStartBtn">🚀 返回設定並開始</button>
     </div>
 
     <!-- ===================================== -->
@@ -1483,23 +1368,23 @@
                         <img data-src="https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/tut-notes-1.jpg" alt="高音譜號音符位置讀譜練習表" class="tut-img" loading="lazy" decoding="async">
                         <span class="tut-img-hint">🔍 點擊放大</span>
                     </a>
-                    <p class="tut-text">圖右方「音名對照表」：意大利語 Do/Re… = 英語 C/D… = 日語 ハ/ニ…。下方「おんぷクイズ」的題型與我們的遊戲一樣——看譜認音，多練多快！</p>
+                    <p class="tut-text">圖右方「音名對照表」：意大利語 Do／Re… 對應英語 C／D… 及日語 ハ／ニ…。下方練習為視譜辨認音名，宜多加練習。</p>
                 </div>
 
                 <!-- Slide 2: 點樣玩 -->
                 <div class="tut-slide">
-                    <h3 class="tut-title">🎮 怎樣玩遊戲？</h3>
+                    <h3 class="tut-title">🎮 如何進行練習？</h3>
                     <div class="tut-visual tut-steps-visual">
                         <ol class="tut-steps">
-                            <li style="background:#FFF0F8; border-left:4px solid #FF65A3;">👀 <strong>看清</strong>五線譜上出現的音符</li>
-                            <li style="background:#FFF5EC; border-left:4px solid #FF8C42;">🎹 <strong>快快按</strong>下正確的音名按鈕（如 C、D、F# …）</li>
-                            <li style="background:#F0F9FF; border-left:4px solid #00A6ED;">🔥 答對有分！<strong>連續答對</strong>有連擊獎勵加分 💯</li>
-                            <li style="background:#F3EEFF; border-left:4px solid #8B66FF;">💡 不確定可以按「<strong>聽&amp;看答案</strong>」學習，或「<strong>跳過</strong>」換題</li>
+                            <li style="background:#FFF0F8; border-left:4px solid #FF65A3;"><strong>辨認</strong>五線譜上出現的音符</li>
+                            <li style="background:#FFF5EC; border-left:4px solid #FF8C42;">🎹 <strong>按</strong>下正確的音名按鈕（如 C、D、F# …）</li>
+                            <li style="background:#F0F9FF; border-left:4px solid #00A6ED;">答對得分。<strong>連續答對</strong>可獲連擊加分。</li>
+                            <li style="background:#F3EEFF; border-left:4px solid #8B66FF;">如未能確定，可按「<strong>聽&amp;看答案</strong>」查閱，或按「<strong>跳過</strong>」更換題目</li>
                             <li style="background:#F0F9FF; border-left:4px solid #00A6ED;">⌨️ 鍵盤快捷鍵：<strong>1-7</strong> 按自然音，<strong>H</strong> 聆聽答案，<strong>空格</strong> 跳過</li>
-                            <li style="background:#EEFAF6; border-left:4px solid #00B89F;">🏆 挑戰模式完成後可上傳<strong>排行榜</strong>，同班競技！</li>
+                            <li style="background:#EEFAF6; border-left:4px solid #00B89F;">🏆 挑戰模式完成後可上傳<strong>排行榜</strong>，可與同班同學比較成績。</li>
                         </ol>
                     </div>
-                    <p class="tut-text">🔑 口訣：<strong>Do=C　Re=D　Mi=E　Fa=F　Sol=G　La=A　Si=B</strong>　多練多快 🎵</p>
+                    <p class="tut-text">對照：<strong>Do＝C　Re＝D　Mi＝E　Fa＝F　Sol＝G　La＝A　Si＝B</strong></p>
                 </div>
 
             </div><!-- end tutSlidesWrap -->
@@ -1529,7 +1414,7 @@
         </div>
     </div>
 
-    <script src="bootstrap-instruments.js" data-app-bootstrap defer></script>
+    <script src="bootstrap-instruments.js?v=4" data-app-bootstrap defer></script>
     <audio id="bgMusic" src="tastic-groove.mp3" loop preload="none"></audio>
 </body>
 </html>

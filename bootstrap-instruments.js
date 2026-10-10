@@ -6,22 +6,22 @@
     studio.src = new URL("composition-studio.js", base).href;
     studio.onload = function () {
       var s = document.createElement("script");
-      s.src = new URL("script.js", base).href;
+      s.src = new URL("script.js?v=4", base).href;
       s.defer = true;
       document.body.appendChild(s);
     };
     studio.onerror = function () {
       console.warn("[bootstrap-instruments] composition-studio.js failed, loading script.js only");
       var s = document.createElement("script");
-      s.src = new URL("script.js", base).href;
+      s.src = new URL("script.js?v=4", base).href;
       s.defer = true;
       document.body.appendChild(s);
     };
     document.body.appendChild(studio);
   }
   Promise.all([
-    fetch(new URL("data/instrument-bank.json", base)),
-    fetch(new URL("data/instrument-structure.json", base)),
+    fetch(new URL("data/instrument-bank.json", base), { cache: "no-store" }),
+    fetch(new URL("data/instrument-structure.json", base), { cache: "no-store" }),
   ])
     .then(function (rs) {
       return Promise.all(

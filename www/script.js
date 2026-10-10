@@ -48,7 +48,7 @@
         const name =
             (social && social.displayName) ||
             localStorage.getItem('appPlayerName') ||
-            '玩家';
+            '學生';
         return { name, grade: 0, class: 'App', seat: '' };
     }
 
@@ -77,16 +77,16 @@
     // Bass MAPS: G2(0) A2(1) B2(2) C3(3) D3(4) E3(5) F3(6) G3(7) A3(8) B3(9) C4(10)
     const CHALLENGE_LEVELS = {
         treble: {
-            1: { noteRange:[0,4],  accidentalChance:0,    ledgerAbove:false, ledgerBelow:false },
-            2: { noteRange:[0,7],  accidentalChance:0,    ledgerAbove:false, ledgerBelow:false },
+            1: { noteRange:[0,12], accidentalChance:0.4,  ledgerAbove:true,  ledgerBelow:true },
+            2: { noteRange:[0,12], accidentalChance:0.4,  ledgerAbove:true,  ledgerBelow:true },
             3: { noteRange:[0,9],  accidentalChance:0.1,  ledgerAbove:false, ledgerBelow:false },
             4: { noteRange:[0,11], accidentalChance:0.15, ledgerAbove:true,  ledgerBelow:false },
             5: { noteRange:[0,12], accidentalChance:0.25, ledgerAbove:true,  ledgerBelow:true },
             6: { noteRange:[0,12], accidentalChance:0.4,  ledgerAbove:true,  ledgerBelow:true }
         },
         bass: {
-            1: { noteRange:[3,7],  accidentalChance:0,    ledgerAbove:false, ledgerBelow:false },
-            2: { noteRange:[2,8],  accidentalChance:0,    ledgerAbove:false, ledgerBelow:false },
+            1: { noteRange:[0,10], accidentalChance:0.4,  ledgerAbove:true,  ledgerBelow:true },
+            2: { noteRange:[0,10], accidentalChance:0.4,  ledgerAbove:true,  ledgerBelow:true },
             3: { noteRange:[1,9],  accidentalChance:0.1,  ledgerAbove:false, ledgerBelow:false },
             4: { noteRange:[0,10], accidentalChance:0.15, ledgerAbove:false, ledgerBelow:true },
             5: { noteRange:[0,10], accidentalChance:0.25, ledgerAbove:true,  ledgerBelow:true },
@@ -126,10 +126,12 @@
     ];
 
     function getKeysigPool(grade) {
-        let pool = KEY_SIGNATURES.filter(k => k.grade <= grade);
+        const g0 = parseInt(grade, 10);
+        const cap = (g0 === 1 || g0 === 2) ? 6 : grade;
+        let pool = KEY_SIGNATURES.filter(k => k.grade <= cap);
         // Ensure at least 2 options for question generation; expand grade if needed
         if (pool.length < 2) {
-            for (let g = grade + 1; g <= 6 && pool.length < 2; g++) {
+            for (let g = cap + 1; g <= 6 && pool.length < 2; g++) {
                 pool = KEY_SIGNATURES.filter(k => k.grade <= g);
             }
         }
@@ -150,8 +152,8 @@
 
     // Solfège grade config: which keys available + note range for treble clef
     const SOLFEGE_LEVELS = {
-        1: { keys:['C','G','F'],noteRange:[0,7]  },
-        2: { keys:['C','G','F'],noteRange:[0,7]  },
+        1: { keys:['C','G','F','D','Bb','A','Eb','E','Ab','B','Db'], noteRange:[0,12] },
+        2: { keys:['C','G','F','D','Bb','A','Eb','E','Ab','B','Db'], noteRange:[0,12] },
         3: { keys:['C','G','F','D','Bb'], noteRange:[0,9]  },
         4: { keys:['C','G','F','D','Bb','A','Eb'], noteRange:[0,9] },
         5: { keys:['C','G','F','D','Bb','A','Eb','E','Ab'], noteRange:[0,11] },
@@ -221,7 +223,7 @@
         const prev = nameEl.value;
         const frag = document.createDocumentFragment();
         const firstOpt = document.createElement('option');
-        firstOpt.value = ''; firstOpt.textContent = '選擇你的名字';
+        firstOpt.value = ''; firstOpt.textContent = '請選擇姓名';
         frag.appendChild(firstOpt);
         students.forEach((name, i) => {
             const opt = document.createElement('option');
@@ -232,7 +234,7 @@
         });
         const otherOpt = document.createElement('option');
         otherOpt.value = '__other__';
-        otherOpt.textContent = '✏️ 其他（自行輸入）';
+        otherOpt.textContent = '✏️ 其他（自行填寫）';
         frag.appendChild(otherOpt);
         nameEl.innerHTML = '';
         nameEl.appendChild(frag);
@@ -495,7 +497,7 @@
         const list = Array.isArray(history) ? history : [];
         if (list.length < 2) {
             return { ready: false, message: list.length === 1
-                ? '再玩一次就能看到進步趨勢！'
+                ? '再次練習後，即可顯示進步趨勢。'
                 : '完成遊戲後，這裡會顯示你的進步。' };
         }
         const split = Math.floor(list.length / 2);
@@ -515,10 +517,10 @@
         let headline = '表現穩定，繼續保持！';
         if (accDiff >= 5 || scoreDiff >= 20) {
             tone = 'up';
-            headline = '有進步！繼續加油！';
+            headline = '成績有所進步，請繼續練習。';
         } else if (accDiff <= -5 || scoreDiff <= -20) {
             tone = 'down';
-            headline = '最近有點退步，多練習就會回來！';
+            headline = '近期成績稍降，請加強練習。';
         }
         return {
             ready: true, tone, headline,
@@ -793,8 +795,8 @@
         avEl.textContent = p.avatar;
         avEl.style.background = avInfo.bg;
         document.getElementById('profileName').textContent = p.name + ' 同學';
-        document.getElementById('profileSig').textContent = p.signature || '點擊編輯個人簽名...';
-        document.getElementById('profileId').textContent = `${p.grade ? '小' + p.grade : ''} ${p.class}班 ${p.seat ? p.seat + '號' : ''}`;
+        document.getElementById('profileSig').textContent = p.signature || '按此編輯簽名';
+        document.getElementById('profileId').textContent = `${p.grade ? (['','中一','中二','中三','中四','中五','中六'][p.grade] || '') : ''} ${p.class}班 ${p.seat ? p.seat + '號' : ''}`;
         document.getElementById('profileSince').textContent = '加入日期: ' + (p.registeredAt ? new Date(p.registeredAt).toLocaleDateString() : '---');
 
         // Level & EXP
@@ -803,7 +805,7 @@
         const pct = Math.min(100, Math.round((p.exp / needed) * 100));
         document.getElementById('profileExpFill').style.width = pct + '%';
         document.getElementById('profileExpText').textContent = `${p.exp} / ${needed} EXP`;
-        document.getElementById('profilePlaytime').textContent = `🕐 累計遊戲時長：${formatPlayTime(p.totalPlayTime)}`;
+        document.getElementById('profilePlaytime').textContent = `🕐 累計練習時間：${formatPlayTime(p.totalPlayTime)}`;
 
         // Stats
         const s = p.stats;
@@ -860,7 +862,7 @@
         if (recentEl) {
             const recent = (p.history || []).slice(-8).reverse();
             if (!recent.length) {
-                recentEl.innerHTML = '<div class="profile-trend-empty">還沒有遊玩紀錄</div>';
+                recentEl.innerHTML = '<div class="profile-trend-empty">尚無練習紀錄</div>';
             } else {
                 recentEl.innerHTML = recent.map(h => {
                     const label = PROFILE_GAME_LABELS[h.game] || h.game || '遊戲';
@@ -924,7 +926,7 @@
             const val = sigInput.value.trim().slice(0, 30);
             p.signature = val;
             saveProfile(p);
-            document.getElementById('profileSig').textContent = val || '點擊編輯個人簽名...';
+            document.getElementById('profileSig').textContent = val || '按此編輯簽名';
         };
     }
 
@@ -1785,7 +1787,7 @@
     function showComboBurst(combo) {
         const el = document.createElement('div');
         el.className = 'combo-burst';
-        el.textContent = combo >= 10 ? `🔥 ${combo} 題連對！太棒了！` : `⚡ ${combo} 題連對！`;
+        el.textContent = combo >= 10 ? `🔥 ${combo} 題連續答對。` : `⚡ ${combo} 題連續答對。`;
         document.body.appendChild(el);
         setTimeout(() => el.remove(), 900);
     }
@@ -1838,19 +1840,6 @@
         return TEXTBOOK_CONFIG[tbKey];
     }
 
-    function _getEffectiveGrade() {
-        const selectedGrade = parseInt(dom.userGrade?.value, 10);
-        if (!Number.isNaN(selectedGrade) && selectedGrade > 0) return selectedGrade;
-        const userGrade = parseInt(state.currentUser?.grade, 10);
-        if (!Number.isNaN(userGrade) && userGrade > 0) return userGrade;
-        return 3;
-    }
-
-    function _isLowerGradeNoAccidentals() {
-        const grade = _getEffectiveGrade();
-        return grade === 1 || grade === 2;
-    }
-
     function generateNote() {
         let clefOptions = [], accidentalChance = 0, noteRange = [0, 10], allowAbove = true, allowBelow = true;
         
@@ -1867,7 +1856,6 @@
             const clef = clefOptions[Math.floor(Math.random() * clefOptions.length)];
             const lvl = (CHALLENGE_LEVELS[clef] && CHALLENGE_LEVELS[clef][gradeKey]) || CHALLENGE_LEVELS.treble[3];
             accidentalChance = lvl.accidentalChance;
-            if (_isLowerGradeNoAccidentals()) accidentalChance = 0;
             allowAbove = lvl.ledgerAbove; allowBelow = lvl.ledgerBelow;
             noteRange = lvl.noteRange;
             // Skip the clef selection below — we already chose
@@ -1889,7 +1877,6 @@
             // Practice mode — use difficulty-based config
             const config = _getPracticeConfig();
             clefOptions = config.clef; accidentalChance = config.accidentalChance; noteRange = config.noteRange; allowAbove = config.ledgerAbove; allowBelow = config.ledgerBelow;
-            if (_isLowerGradeNoAccidentals()) accidentalChance = 0;
         }
 
         const clef = clefOptions[Math.floor(Math.random() * clefOptions.length)];
@@ -1925,7 +1912,6 @@
         } else {
             hasAccidentals = _getPracticeConfig().accidentalChance > 0;
         }
-        if (gradeKey === 1 || gradeKey === 2) hasAccidentals = false;
         const showSharp = hasAccidentals;
         const showFlat  = hasAccidentals;
 
@@ -1980,7 +1966,7 @@
             }
             const pts = state.modeConfig.type === 'challenge' ? Math.round(10 * state.modeConfig.scoreMulti + state.combo) : 0;
             if (pts) state.score += pts;
-            const _sol = noteSol(state.currentNote); const _secs = isFirstAttempt ? ` ⚡ ${(elapsed/1000).toFixed(1)}s` : ''; dom.messageBox.textContent = `✅ 答對了！${state.currentNote.correctName}${_sol?' = '+_sol:''}${_secs} ✨ 得分：${state.score}`; 
+            const _sol = noteSol(state.currentNote); const _secs = isFirstAttempt ? ` ⚡ ${(elapsed/1000).toFixed(1)}s` : ''; dom.messageBox.textContent = `✅ 回答正確。${state.currentNote.correctName}${_sol?' = '+_sol:''}${_secs} ✨ 得分：${state.score}`; 
             dom.messageBox.className = 'message-box correct';
             audio.playNote(state.currentNote.freqKey);
             if (btn) { btn.classList.add('correct'); if (pts) { const r = btn.getBoundingClientRect(); showScoreFloat(pts, r.left + r.width/2 - 15, r.top - 10); } }
@@ -1990,7 +1976,7 @@
                 const correctCount = state.totalQuestions - state.wrongCount;
                 if (correctCount > 0 && correctCount % 20 === 0) {
                     showComboBurst(correctCount); spawnConfetti(MAX_CONFETTI + 5);
-                    dom.messageBox.textContent = `🎯 已答對 ${correctCount} 題！你好棒！繼續加油！`;
+                    dom.messageBox.textContent = `🎯 已答對 ${correctCount} 題！表現良好，請繼續練習。`;
                 }
             }
             setTimeout(() => { if (!state.gameActive) return; if (btn) btn.classList.remove('correct', 'wrong'); nextQuestion(); }, 500);
@@ -2004,7 +1990,7 @@
             state.answered = true; 
             state.wrongCount++; 
             state.showAnswerHighlight = true; drawStaff();
-            const _sol2 = noteSol(state.currentNote); const _secs2 = isFirstAttempt ? `（${(elapsed/1000).toFixed(1)}s）` : ''; dom.messageBox.textContent = `❌ 答錯了！正確答案是 ${state.currentNote.correctName}${_sol2?' ('+_sol2+')':''}${_secs2}，記住了嗎？`; 
+            const _sol2 = noteSol(state.currentNote); const _secs2 = isFirstAttempt ? `（${(elapsed/1000).toFixed(1)}s）` : ''; dom.messageBox.textContent = `❌ 回答不正確。正確答案是 ${state.currentNote.correctName}${_sol2?' ('+_sol2+')':''}${_secs2}，請記下正確答案。`; 
             dom.messageBox.className = 'message-box wrong';
             if (btn) btn.classList.add('wrong'); 
             setTimeout(() => { if (!state.gameActive) return; if (btn) btn.classList.remove('wrong'); if(state.modeConfig.maxWrong !== Infinity) endGame(); else nextQuestion(); }, 1500);
@@ -2063,7 +2049,7 @@
         const playerName = getPlayerName();
         if (!playerName) {
             dom.nameField.classList.add('error');
-            alert('❗ 請先選擇你的名字才可以開始哦！');
+            alert('❗ 請先請先選擇姓名，方可開始。');
             return;
         }
         dom.nameField.classList.remove('error');
@@ -2071,7 +2057,7 @@
         state.currentUser = { name: playerName, grade: parseInt(dom.userGrade.value), class: dom.userClass.value, id: dom.userId.value };
         markProfilePlayStart();
         buildNoteButtons();
-        dom.inGameUser.textContent = `👋 ${state.currentUser.name} 同學，加油！模式：${state.modeConfig.name}`;
+        dom.inGameUser.textContent = `👋 ${state.currentUser.name} 同學 · ${state.modeConfig.name}`;
         dom.endBtn.textContent = state.modeConfig.type === 'practice' ? '📊 結束練習' : '🏁 結束挑戰';
 
         state.gameActive = false; 
@@ -2104,7 +2090,7 @@
             dom.timeProgress.style.width = '100%'; 
             dom.timeProgress.style.transition = 'none'; 
             updateScoreboard();
-            dom.messageBox.textContent = `🎵 ${state.modeConfig.name} — 開始了！加油！`; 
+            dom.messageBox.textContent = `🎵 ${state.modeConfig.name} — 練習開始。`; 
             dom.messageBox.className = 'message-box'; 
             nextQuestion();
             if (state.timeLeft !== Infinity) {
@@ -2123,7 +2109,7 @@
         if (state.timeLeft === 10) { 
             dom.timeDisplay.classList.add('warning'); 
             dom.timeProgress.classList.add('warning'); 
-            dom.messageBox.textContent = '⚠️ 最後10秒！加油加油！'; 
+            dom.messageBox.textContent = '⚠️ 剩餘 10 秒。'; 
             dom.messageBox.className = 'message-box warning'; 
         }
         if (state.timeLeft <= 10 && state.timeLeft > 0) audio.playEffect('warning');
@@ -2204,7 +2190,7 @@
             const pts = state.modeConfig.type === 'challenge' ? Math.round(10 * state.modeConfig.scoreMulti + state.combo) : 0;
             if (pts) state.score += pts;
             const _secs = isFirstAttempt ? ` ⚡ ${(elapsed/1000).toFixed(1)}s` : '';
-            dom.messageBox.textContent = `✅ 答對了！${q.correct.name}${_secs} ✨ 得分：${state.score}`;
+            dom.messageBox.textContent = `✅ 回答正確。${q.correct.name}${_secs} ✨ 得分：${state.score}`;
             dom.messageBox.className = 'message-box correct';
             if (btn) { btn.classList.add('correct'); if (pts) { const r = btn.getBoundingClientRect(); showScoreFloat(pts, r.left + r.width/2 - 15, r.top - 10); } }
             if (state.combo > 0 && state.combo % COMBO_CONFETTI_INTERVAL === 0) { showComboBurst(state.combo); spawnConfetti(Math.min(state.combo, MAX_CONFETTI)); }
@@ -2212,7 +2198,7 @@
                 const correctCount = state.totalQuestions - state.wrongCount;
                 if (correctCount > 0 && correctCount % 20 === 0) {
                     showComboBurst(correctCount); spawnConfetti(MAX_CONFETTI + 5);
-                    dom.messageBox.textContent = `🎯 已答對 ${correctCount} 題！你好棒！繼續加油！`;
+                    dom.messageBox.textContent = `🎯 已答對 ${correctCount} 題！表現良好，請繼續練習。`;
                 }
             }
             setTimeout(() => { if (!state.gameActive) return; nextKeysigQuestion(); }, 500);
@@ -2222,7 +2208,7 @@
             audio.playEffect('wrong');
             state.answered = true;
             state.wrongCount++;
-            dom.messageBox.textContent = `❌ 答錯了！正確答案是 ${q.correct.name}，記住了嗎？`;
+            dom.messageBox.textContent = `❌ 回答不正確。正確答案是 ${q.correct.name}，請記下正確答案。`;
             dom.messageBox.className = 'message-box wrong';
             if (btn) btn.classList.add('wrong');
             // Highlight correct
@@ -2247,14 +2233,14 @@
     function startKeysigGame() {
         audio.init(); audio.warmUp();
         const playerName = getPlayerName();
-        if (!playerName) { dom.nameField.classList.add('error'); alert('❗ 請先選擇你的名字才可以開始哦！'); return; }
+        if (!playerName) { dom.nameField.classList.add('error'); alert('❗ 請先請先選擇姓名，方可開始。'); return; }
         dom.nameField.classList.remove('error');
         saveSettings();
         state.currentUser = { name: playerName, grade: parseInt(dom.userGrade.value), class: dom.userClass.value, id: dom.userId.value };
 
         showKeysigUI(true);
         showSolfegeUI(false);
-        dom.inGameUser.textContent = `👋 ${state.currentUser.name} 同學，加油！模式：${state.modeConfig.name}`;
+        dom.inGameUser.textContent = `👋 ${state.currentUser.name} 同學 · ${state.modeConfig.name}`;
         dom.endBtn.textContent = state.modeConfig.type === 'practice' ? '📊 結束練習' : '🏁 結束挑戰';
 
         state.gameActive = false;
@@ -2279,7 +2265,7 @@
             dom.timeProgress.style.width = '100%';
             dom.timeProgress.style.transition = 'none';
             updateScoreboard();
-            dom.messageBox.textContent = `🎼 ${state.modeConfig.name} — 開始了！加油！`;
+            dom.messageBox.textContent = `🎼 ${state.modeConfig.name} — 練習開始。`;
             dom.messageBox.className = 'message-box';
             nextKeysigQuestion();
             if (state.timeLeft !== Infinity) {
@@ -2498,7 +2484,7 @@
             if (pts) state.score += pts;
             const _secs = isFirstAttempt ? ` ⚡ ${(elapsed/1000).toFixed(1)}s` : '';
             const keyLabel = state.currentNote.keySig ? ` (${state.currentNote.keySig.name})` : '';
-            dom.messageBox.textContent = `✅ 答對了！${state.currentNote.correctSolfege} = ${state.currentNote.correctName}${keyLabel}${_secs} ✨ 得分：${state.score}`;
+            dom.messageBox.textContent = `✅ 回答正確。${state.currentNote.correctSolfege} = ${state.currentNote.correctName}${keyLabel}${_secs} ✨ 得分：${state.score}`;
             dom.messageBox.className = 'message-box correct';
             audio.playNote(state.currentNote.freqKey);
             if (btn) { btn.classList.add('correct'); if (pts) { const r = btn.getBoundingClientRect(); showScoreFloat(pts, r.left + r.width/2 - 15, r.top - 10); } }
@@ -2507,7 +2493,7 @@
                 const correctCount = state.totalQuestions - state.wrongCount;
                 if (correctCount > 0 && correctCount % 20 === 0) {
                     showComboBurst(correctCount); spawnConfetti(MAX_CONFETTI + 5);
-                    dom.messageBox.textContent = `🎯 已答對 ${correctCount} 題！你好棒！繼續加油！`;
+                    dom.messageBox.textContent = `🎯 已答對 ${correctCount} 題！表現良好，請繼續練習。`;
                 }
             }
             setTimeout(() => { if (!state.gameActive) return; if (btn) btn.classList.remove('correct', 'wrong'); nextSolfegeQuestion(); }, 500);
@@ -2520,7 +2506,7 @@
             state.wrongCount++;
             state.showAnswerHighlight = true; drawStaffWithKeySig();
             const keyLabel = state.currentNote.keySig ? ` (${state.currentNote.keySig.name})` : '';
-            dom.messageBox.textContent = `❌ 答錯了！正確答案是 ${state.currentNote.correctSolfege} = ${state.currentNote.correctName}${keyLabel}，記住了嗎？`;
+            dom.messageBox.textContent = `❌ 回答不正確。正確答案是 ${state.currentNote.correctSolfege} = ${state.currentNote.correctName}${keyLabel}，請記下正確答案。`;
             dom.messageBox.className = 'message-box wrong';
             if (btn) btn.classList.add('wrong');
             // Highlight correct button
@@ -2555,7 +2541,7 @@
     function startSolfegeGame() {
         audio.init(); audio.warmUp();
         const playerName = getPlayerName();
-        if (!playerName) { dom.nameField.classList.add('error'); alert('❗ 請先選擇你的名字才可以開始哦！'); return; }
+        if (!playerName) { dom.nameField.classList.add('error'); alert('❗ 請先請先選擇姓名，方可開始。'); return; }
         dom.nameField.classList.remove('error');
         saveSettings();
         state.currentUser = { name: playerName, grade: parseInt(dom.userGrade.value), class: dom.userClass.value, id: dom.userId.value };
@@ -2563,7 +2549,7 @@
         showKeysigUI(false);
         showSolfegeUI(true);
         if (dom.clefBadge) dom.clefBadge.textContent = '高音譜號';
-        dom.inGameUser.textContent = `👋 ${state.currentUser.name} 同學，加油！模式：${state.modeConfig.name}`;
+        dom.inGameUser.textContent = `👋 ${state.currentUser.name} 同學 · ${state.modeConfig.name}`;
         dom.endBtn.textContent = state.modeConfig.type === 'practice' ? '📊 結束練習' : '🏁 結束挑戰';
 
         state.gameActive = false;
@@ -2589,7 +2575,7 @@
             dom.timeProgress.style.width = '100%';
             dom.timeProgress.style.transition = 'none';
             updateScoreboard();
-            dom.messageBox.textContent = `🎤 ${state.modeConfig.name} — 開始了！加油！`;
+            dom.messageBox.textContent = `🎤 ${state.modeConfig.name} — 練習開始。`;
             dom.messageBox.className = 'message-box';
             nextSolfegeQuestion();
             if (state.timeLeft !== Infinity) {
@@ -2608,7 +2594,7 @@
         
         const sorted = Object.entries(state.wrongNoteStats).sort((a,b)=>b[1]-a[1]);
         if (!sorted.length) {
-            dom.reportWeakness.innerHTML = '<div>🌟 太厲害了！全部答對，你是音樂小天才！ 🎉</div>';
+            dom.reportWeakness.innerHTML = '<div>🌟 全部答對。</div>';
             return;
         }
         // Categorize errors
@@ -2643,11 +2629,11 @@
         }
         let analysis = '<ul>';
         analysis += sorted.slice(0,3).map(([k,v]) => `<li><strong>${k}</strong>：錯了 ${v} 次</li>`).join('');
-        if (ledgerErrors > staffErrors && ledgerErrors > 2) analysis += '<li>📏 加線音符出錯較多，可以多練習上下加線範圍</li>';
+        if (ledgerErrors > staffErrors && ledgerErrors > 2) analysis += '<li>📏 加線音符出錯較多，請多練習上、下加線音域</li>';
         if (accidentalErrors > naturalErrors && accidentalErrors > 2) analysis += '<li>🎵 升降號音符出錯較多，需加強升降記號辨認</li>';
         if (speedTrend) analysis += speedTrend;
         analysis += '</ul>';
-        dom.reportWeakness.innerHTML = `<div>要加油練習的音符：</div>${analysis}`;
+        dom.reportWeakness.innerHTML = `<div>尚需加強的音符：</div>${analysis}`;
 
         // Slow-correct notes section
         const slowSorted = Object.entries(state.slowNoteStats).sort((a,b) => b[1] - a[1]);
@@ -2697,7 +2683,7 @@
             let html = '<div class="history-summary"><div class="group-title">📈 進度趨勢（近 ' + history.length + ' 次）</div><ul style="margin:8px 0 0 16px; font-size:0.9rem;">';
             const accDiff = recentAcc - olderAcc;
             if (accDiff > 5) html += `<li>✅ 正確率進步中！${olderAcc}% → ${recentAcc}%</li>`;
-            else if (accDiff < -5) html += `<li>⚠️ 正確率下降了 ${olderAcc}% → ${recentAcc}%，多練練</li>`;
+            else if (accDiff < -5) html += `<li>⚠️ 正確率下降了 ${olderAcc}% → ${recentAcc}%，請加強練習</li>`;
             else html += `<li>📊 正確率穩定在 ${recentAcc}% 附近</li>`;
             const spdDiff = parseFloat(recentSpd) - parseFloat(olderSpd);
             if (spdDiff < -0.3) html += `<li>🚀 反應速度加快了！${olderSpd}s → ${recentSpd}s</li>`;
@@ -3426,8 +3412,8 @@
             loadRanks();
         });
         
-        dom.revealBtn.addEventListener('click', () => { if (!state.gameActive || state.answered) return; const gt = state.modeConfig && state.modeConfig.gameType; if (gt === 'keysig') { state.answered = true; state.combo = 0; updateScoreboard(); if (_keysigCurrentQ) { dom.messageBox.textContent = `🔑 答案是 ${_keysigCurrentQ.correct.name}！記住它！`; } dom.messageBox.className = 'message-box warning'; enableGameControls(false); setTimeout(() => { dom.messageBox.className = 'message-box'; nextKeysigQuestion(); }, 2000); return; } if (gt === 'solfege') { state.answered = true; state.combo = 0; updateScoreboard(); if (state.currentNote) { const solName = getSolfege(state.currentNote.note, state._solfegeKeySig); dom.messageBox.textContent = `🎵 答案是 ${solName}！記住它！`; } dom.messageBox.className = 'message-box warning'; enableGameControls(false); setTimeout(() => { dom.messageBox.className = 'message-box'; nextSolfegeQuestion(); }, 2000); return; } state.answered = true; state.combo = 0; state.showAnswerHighlight = true; drawStaff(); updateScoreboard(); audio.playNote(state.currentNote.freqKey); const _sol3 = noteSol(state.currentNote); dom.messageBox.textContent = `🔊 答案是 ${state.currentNote.correctName}${_sol3?' = '+_sol3:''}，聽聽看！記住位置，下題加油！`; dom.messageBox.className = 'message-box warning'; enableGameControls(false); setTimeout(() => { dom.messageBox.className = 'message-box'; nextQuestion(); }, 2500); });
-        dom.skipBtn.addEventListener('click', () => { if (!state.gameActive || state.answered) return; state.answered = true; state.combo = 0; updateScoreboard(); dom.messageBox.textContent = '⏩ 跳過這題，下一題加油！'; dom.messageBox.className = 'message-box'; const gt = state.modeConfig && state.modeConfig.gameType; setTimeout(() => { if (gt === 'keysig') nextKeysigQuestion(); else if (gt === 'solfege') nextSolfegeQuestion(); else nextQuestion(); }, 400); });
+        dom.revealBtn.addEventListener('click', () => { if (!state.gameActive || state.answered) return; const gt = state.modeConfig && state.modeConfig.gameType; if (gt === 'keysig') { state.answered = true; state.combo = 0; updateScoreboard(); if (_keysigCurrentQ) { dom.messageBox.textContent = `🔑 答案是 ${_keysigCurrentQ.correct.name}！請記下。`; } dom.messageBox.className = 'message-box warning'; enableGameControls(false); setTimeout(() => { dom.messageBox.className = 'message-box'; nextKeysigQuestion(); }, 2000); return; } if (gt === 'solfege') { state.answered = true; state.combo = 0; updateScoreboard(); if (state.currentNote) { const solName = getSolfege(state.currentNote.note, state._solfegeKeySig); dom.messageBox.textContent = `🎵 答案是 ${solName}！請記下。`; } dom.messageBox.className = 'message-box warning'; enableGameControls(false); setTimeout(() => { dom.messageBox.className = 'message-box'; nextSolfegeQuestion(); }, 2000); return; } state.answered = true; state.combo = 0; state.showAnswerHighlight = true; drawStaff(); updateScoreboard(); audio.playNote(state.currentNote.freqKey); const _sol3 = noteSol(state.currentNote); dom.messageBox.textContent = `🔊 答案是 ${state.currentNote.correctName}${_sol3?' = '+_sol3:''}，請聆聽並記下音位，然後作答下一題。`; dom.messageBox.className = 'message-box warning'; enableGameControls(false); setTimeout(() => { dom.messageBox.className = 'message-box'; nextQuestion(); }, 2500); });
+        dom.skipBtn.addEventListener('click', () => { if (!state.gameActive || state.answered) return; state.answered = true; state.combo = 0; updateScoreboard(); dom.messageBox.textContent = '⏩ 已跳過本題，請作答下一題。'; dom.messageBox.className = 'message-box'; const gt = state.modeConfig && state.modeConfig.gameType; setTimeout(() => { if (gt === 'keysig') nextKeysigQuestion(); else if (gt === 'solfege') nextSolfegeQuestion(); else nextQuestion(); }, 400); });
         
         document.getElementById('rankGameFilter')?.addEventListener('change', () => {
             const gfVal = document.getElementById('rankGameFilter').value;
@@ -3604,7 +3590,7 @@
 
         document.getElementById('vpName').textContent = (user.name || p.name) + ' 同學';
         document.getElementById('vpSig').textContent = p.signature || '尚未設定簽名';
-        document.getElementById('vpMeta').textContent = `${user.grade ? '小' + user.grade : ''} ${user.class}班 · ${user.seat ? user.seat + '號' : ''}`;
+        document.getElementById('vpMeta').textContent = `${user.grade ? (['','中一','中二','中三','中四','中五','中六'][user.grade] || '') : ''} ${user.class}班 · ${user.seat ? user.seat + '號' : ''}`;
         document.getElementById('vpLevel').textContent = 'Lv.' + p.level;
         const needed = _expForLevel(p.level);
         const expPct = Math.min(100, Math.round((p.exp / needed) * 100));
@@ -3775,7 +3761,7 @@
             const prev = hubName.value;
             const frag = document.createDocumentFragment();
             const first = document.createElement('option');
-            first.value = ''; first.textContent = '選擇你的名字';
+            first.value = ''; first.textContent = '請選擇姓名';
             frag.appendChild(first);
             students.forEach((n, i) => {
                 const o = document.createElement('option');
@@ -3783,7 +3769,7 @@
                 frag.appendChild(o);
             });
             const otherOpt = document.createElement('option');
-            otherOpt.value = '__other__'; otherOpt.textContent = '✏️ 其他（自行輸入）';
+            otherOpt.value = '__other__'; otherOpt.textContent = '✏️ 其他（自行填寫）';
             frag.appendChild(otherOpt);
             const guestOpt = document.createElement('option');
             guestOpt.value = '__guest__'; guestOpt.textContent = '🧪 訪客 / 測試人員';
@@ -4135,8 +4121,8 @@
                         g3SelectedDiff = 'p' + defaultGrade;
                         document.querySelectorAll('#g3PracticeGradeCards .diff-card').forEach(x => x.classList.toggle('active', x.dataset.diff === g3SelectedDiff));
                     } else {
-                        g3SelectedDiff = 'easy';
-                        document.querySelectorAll('#g3DiffCards .diff-card').forEach(x => x.classList.toggle('active', x.dataset.diff === 'easy'));
+                        g3SelectedDiff = (defaultGrade === 1 || defaultGrade === 2) ? 'expert' : 'easy';
+                        document.querySelectorAll('#g3DiffCards .diff-card').forEach(x => x.classList.toggle('active', x.dataset.diff === g3SelectedDiff));
                     }
                     _updateSelectors();
                 };
@@ -4850,8 +4836,8 @@
      * winScale: multiplier on timing window (>1 = more lenient)
      */
     const GRADE_CHALLENGE_CONFIG = {
-        1: { tokenSet: 'basic',    bpm: 60,  measures: 4, winScale: 1.4 },
-        2: { tokenSet: 'basic',    bpm: 66,  measures: 4, winScale: 1.3 },
+        1: { tokenSet: 'advanced', bpm: 96,  measures: 4, winScale: 1.0 },
+        2: { tokenSet: 'advanced', bpm: 96,  measures: 4, winScale: 1.0 },
         3: { tokenSet: 'medium',   bpm: 72,  measures: 4, winScale: 1.2 },
         4: { tokenSet: 'medium',   bpm: 80,  measures: 4, winScale: 1.1 },
         5: { tokenSet: 'advanced', bpm: 88,  measures: 4, winScale: 1.0 },
@@ -4935,10 +4921,10 @@
 
         container.innerHTML = `
             <div class="rchal-setup-wrap">
-                <button class="rchal-setup-back" id="rchalExitBtn">← 返回大廳</button>
+                <button class="rchal-setup-back" id="rchalExitBtn">← 返回主頁</button>
                 <div class="rchal-setup-title-area">
                     <h1 class="rchal-setup-title">🥁 節奏挑戰</h1>
-                    <div class="rchal-setup-subtitle">聽準節拍 · 精確拍打 · 衝排行榜</div>
+                    <div class="rchal-setup-subtitle">聽辨節拍 · 準確擊拍 · 計入排行榜</div>
                 </div>
                 <div class="rchal-setup-player">
                     <span class="rchal-setup-badge">👋 ${userName} 同學 (${gradeName})</span>
@@ -4947,7 +4933,7 @@
                     <div class="rchal-diff-title">🎯 選擇難度</div>
                     <div class="rchal-diff-cards" id="rchalDiffCards"></div>
                 </div>
-                <button class="rchal-setup-start" id="rchalSetupStart">🚀 準備好了，開始！</button>
+                <button class="rchal-setup-start" id="rchalSetupStart">🚀 開始練習</button>
                 <button class="rchal-setup-ranks" id="rchalSetupRanks">🏆 查看排行榜</button>
             </div>
         `;
@@ -5036,9 +5022,9 @@
             </div>
             <div class="rchal-tap" id="rchalTap" style="opacity:0;pointer-events:none;">
                 <span class="rchal-tap-emoji">🥁</span>
-                <span class="rchal-tap-label">拍打這裡</span>
+                <span class="rchal-tap-label">請在此擊拍</span>
             </div>
-            <div class="rchal-status" id="rchalStatus">👀 先看清楚節奏，準備好就按下面按鈕</div>
+            <div class="rchal-status" id="rchalStatus">👀 請先審視節奏，然後按下方按鈕開始</div>
             <button class="rchal-ready-btn" id="rchalStartBtn">✋ Ready!</button>
             <div class="rchal-overlay" id="rchalOverlay" style="display:none;"></div>
         `;
@@ -5682,10 +5668,10 @@
         else { grade = 'D'; gradeColor = '#EF4444'; }
 
         let msg;
-        if (stars >= 3) msg = '完美演出！太厲害了！🎉';
+        if (stars >= 3) msg = '準確完成。';
         else if (stars >= 2) msg = '很棒！再接再厲！✨';
-        else if (stars >= 1) msg = '加油！繼續練習會更好！💪';
-        else msg = '沒關係，多練習就會進步！🎵';
+        else if (stars >= 1) msg = '請繼續練習。';
+        else msg = '請再作練習，以提升準確度。';
 
         const starStr = '⭐'.repeat(stars) + '☆'.repeat(3 - stars);
         const hpMsg = rchalState.hp <= 0 ? '💔 HP 歸零！' : `❤️ HP ${Math.round(rchalState.hp)}%`;
@@ -5981,7 +5967,7 @@
             omState.correct++;
             omState.score += 10;
             audio.playAnswer(true);
-            if (fb) { fb.textContent = '✓ 答對了！'; fb.className = 'om-feedback-text show correct'; }
+            if (fb) { fb.textContent = '✓ 回答正確。'; fb.className = 'om-feedback-text show correct'; }
             const scoreEl = document.getElementById('omScore');
             if (scoreEl) scoreEl.textContent = omState.score;
             // Float +10
@@ -6058,7 +6044,7 @@
                 <div class="om-result-stat"><div class="val" style="color:var(--primary-red)">${omState.wrong}</div><div class="lbl">答錯</div></div>
             </div>
             <div class="om-result-btns">
-                <button class="om-btn-retry" id="omRetry">🔄 再玩一次</button>
+                <button class="om-btn-retry" id="omRetry">🔄 再次練習</button>
                 <button class="om-btn-ranks" id="omViewRanks">🏆 查看排行榜</button>
                 <button class="om-btn-back" id="omBack">← 返回</button>
             </div>
@@ -6311,7 +6297,7 @@
         if (isCorrect) {
             durState.correct++;
             durState.score += 100;
-            if (fb) { fb.textContent = '✓ 答對了！'; fb.className = 'om-feedback-text show correct'; }
+            if (fb) { fb.textContent = '✓ 回答正確。'; fb.className = 'om-feedback-text show correct'; }
             const scoreEl = document.getElementById('durScore');
             if (scoreEl) scoreEl.textContent = durState.score;
             // Float +100
@@ -6387,7 +6373,7 @@
                 <div class="om-result-stat"><div class="val" style="color:var(--primary-red)">${durState.wrong}</div><div class="lbl">答錯</div></div>
             </div>
             <div class="om-result-btns">
-                <button class="om-btn-retry" id="durRetry">🔄 再玩一次</button>
+                <button class="om-btn-retry" id="durRetry">🔄 再次練習</button>
                 <button class="om-btn-ranks" id="durViewRanks">🏆 查看排行榜</button>
                 <button class="om-btn-back" id="durBack">← 返回</button>
             </div>
@@ -7126,7 +7112,7 @@
         const titleY = 2;
         const titleH = 22;
         // Title pill background
-        const titleText = '📖 先看清楚節奏';
+        const titleText = '📖 請先審視節奏';
         ctx.font = '900 13px Nunito, sans-serif';
         const titleW = ctx.measureText(titleText).width + 28;
         ctx.fillStyle = 'rgba(99,102,241,0.08)';
@@ -7588,7 +7574,7 @@
                 nextBarStrip.style.display = 'none';
             }
         }
-        document.getElementById('rcMetronomeText').textContent = '跟着節拍器';
+        document.getElementById('rcMetronomeText').textContent = '依照節拍器';
         const metroArm = document.getElementById('rcMetroArm');
         if (metroArm) metroArm.className = 'rc-metro-arm';
         _rcRenderGameTokens(card);
@@ -8300,12 +8286,12 @@
         const qualAcc = Math.round((counts.perfect + counts.great) / total * 100);
 
         let grade = '🌟 S';
-        let gradeMsg = '完美演出！太厲害了！🎉';
+        let gradeMsg = '準確完成。';
         let stars = 3;
         if (qualAcc < 100) { gradeMsg = '超級棒！幾乎完美！✨'; }
         if (qualAcc < 90) { grade = '🥇 A'; gradeMsg = '出色的節奏感！繼續挑戰！'; stars = 2; }
-        if (qualAcc < 75) { grade = '🥈 B'; gradeMsg = '很好！再多練習會更棒！'; stars = 2; }
-        if (qualAcc < 60) { grade = '🥉 C'; gradeMsg = '加油！每次練習都在進步！💪'; stars = 1; }
+        if (qualAcc < 75) { grade = '🥈 B'; gradeMsg = '表現良好，請繼續練習。'; stars = 2; }
+        if (qualAcc < 60) { grade = '🥉 C'; gradeMsg = '請繼續練習。'; stars = 1; }
         if (qualAcc < 40) { stars = 0; }
 
         // Render star rating
@@ -8515,8 +8501,8 @@
         normal: [1, 4],   // 中一至中四
         hard:   [3, 6],   // 小三至小六
         expert: [1, 6],   // 全部
-        p1:     [1, 1],   // 中一
-        p2:     [1, 2],   // 中一至中二
+        p1:     [1, 6],   // 中一：最難（全部術語）
+        p2:     [1, 6],   // 中二：最難（全部術語）
         p3:     [1, 3],   // 中一至中三
         p4:     [1, 4],   // 中一至中四
         p5:     [1, 5],   // 中一至中五
@@ -8603,7 +8589,7 @@
         p6:     () => g3GenerateQuestions('p6'),
     };
 
-    const TERMS_GRADE_BANK = { 1:'easy', 2:'easy', 3:'normal', 4:'normal', 5:'hard', 6:'hard' };
+    const TERMS_GRADE_BANK = { 1:'hard', 2:'hard', 3:'normal', 4:'normal', 5:'hard', 6:'hard' };
 
     // ==========================================
     // 📚 完整音樂術語參考表資料
@@ -9041,7 +9027,7 @@
             <div class="report-item"><div class="report-label">最高連對</div><div class="report-value">${maxCombo}</div></div>` + practiceNote;
         document.getElementById('g3Weakness').innerHTML = wrong === 0
             ? '<div>🌟 全部答對！你是術語識辨小專家！🎉</div>'
-            : `<div>繼續練習加油！正確 ${correct}/${totalAnswered} 題。</div>`;
+            : `<div>請繼續練習。正確 ${correct}/${totalAnswered} 題。</div>`;
 
         // Render mistake review
         const g3MistakeEl = document.getElementById('g3MistakeReview');
@@ -9081,6 +9067,79 @@
     const INSTRUMENT_MAP = new Map(INSTRUMENT_BANK.map(i => [i.id, i]));  // O(1) lookup
     // Pre-index: instruments that have card/photo images (not SVG/emoji-only)
     const G4_IMG_POOL = INSTRUMENT_BANK.filter(i => i.img && /\.(png|jpg|jpeg|avif|webp)$/i.test(i.img));
+
+    function g4SpinFrames(inst) {
+        return inst && Array.isArray(inst.frames) && inst.frames.length > 1 ? inst.frames : null;
+    }
+
+    function g4SpinHtml(frames, imgClass) {
+        const list = frames.map(f => String(f).replace(/[|"<>]/g, ''));
+        const imgs = list.map((src, i) =>
+            `<img class="${imgClass}${i ? '' : ' is-on'}" src="${src}" alt="" draggable="false" decoding="async">`
+        ).join('');
+        return `<div class="g4-spin">${imgs}</div>`;
+    }
+
+    function g4InstImgHtml(inst, imgClass, alt) {
+        const frames = g4SpinFrames(inst);
+        if (frames) return g4SpinHtml(frames, imgClass);
+        if (!inst || !inst.img) return '';
+        return `<img class="${imgClass}" src="${inst.img}" alt="${alt || ''}" loading="lazy">`;
+    }
+
+    function g4ClearSpins(root) {
+        if (!root) return;
+        root.querySelectorAll('.g4-spin').forEach(el => {
+            if (el._spinTimer) clearInterval(el._spinTimer);
+        });
+    }
+
+    function g4BindSpins(root) {
+        if (!root) return;
+        root.querySelectorAll('.g4-spin').forEach(el => {
+            if (el.dataset.bound) return;
+            el.dataset.bound = '1';
+            const pics = [...el.querySelectorAll('img')];
+            if (pics.length < 2) return;
+            let idx = 0;
+            let drag = false;
+            let x0 = 0;
+            let i0 = 0;
+            let raf = 0;
+            let lastX = 0;
+            const show = (n) => {
+                const next = ((n % pics.length) + pics.length) % pics.length;
+                if (next === idx) return;
+                pics[idx].classList.remove('is-on');
+                idx = next;
+                pics[idx].classList.add('is-on');
+            };
+            el.addEventListener('pointerdown', (e) => {
+                drag = true;
+                x0 = lastX = e.clientX;
+                i0 = idx;
+                el.classList.add('is-drag');
+                try { el.setPointerCapture(e.pointerId); } catch (err) {}
+            });
+            el.addEventListener('pointermove', (e) => {
+                if (!drag) return;
+                lastX = e.clientX;
+                if (raf) return;
+                raf = requestAnimationFrame(() => {
+                    raf = 0;
+                    const w = Math.max(120, el.getBoundingClientRect().width);
+                    show(i0 + Math.round((lastX - x0) / (w / pics.length)));
+                });
+            });
+            const end = () => {
+                drag = false;
+                el.classList.remove('is-drag');
+                if (raf) { cancelAnimationFrame(raf); raf = 0; }
+            };
+            el.addEventListener('pointerup', end);
+            el.addEventListener('pointercancel', end);
+        });
+    }
 
     // Sound source descriptions per family (Q4: 靠甚麼發聲？)
     const SOUND_SOURCE_MAP = {
@@ -9309,6 +9368,7 @@
 
         const audioBtn = document.getElementById('g4AudioBtn');
         const visualEl = document.getElementById('g4Visual');
+        g4ClearSpins(visualEl);
         const questionEl = document.getElementById('g4Question');
 
         // Reset audio btn
@@ -9363,21 +9423,21 @@
             setTimeout(loadFrame, 400);
         } else if (q.type === 'image-name') {
             questionEl.textContent = '🖼️ 這是甚麼樂器？';
-            visualEl.innerHTML = `<img class="g4-visual-img" src="${q.instrument.img}" alt="樂器圖片" loading="lazy">`;
+            visualEl.innerHTML = g4InstImgHtml(q.instrument, 'g4-visual-img', '樂器圖片');
         } else if (q.type === 'name-image') {
             questionEl.textContent = `🎯「${q.instrument.nameZh}」是哪一種樂器？點選正確圖片！`;
             visualEl.innerHTML = `<div class="g4-visual-hint" style="font-size:1rem;font-weight:700;margin-top:6px;">${q.instrument.nameEn}</div>`;
         } else if (q.type === 'name-family') {
             questionEl.textContent = `「${q.instrument.nameZh}」屬於哪個樂器家族？`;
-            visualEl.innerHTML = (q.instrument.img ? `<img class="g4-visual-img" src="${q.instrument.img}" alt="${q.instrument.nameZh}" loading="lazy">` : '') +
+            visualEl.innerHTML = g4InstImgHtml(q.instrument, 'g4-visual-img', q.instrument.nameZh) +
                 `<div class="g4-visual-hint" style="font-size:1.1rem;font-weight:700;margin-top:8px;">${q.instrument.nameEn}</div>` +
                 `<div class="g4-visual-hint" style="margin-top:4px;">${q.instrument.desc}</div>`;
         } else if (q.type === 'percussion-pitch') {
             questionEl.textContent = `「${q.instrument.nameZh}」有固定音高嗎？`;
-            visualEl.innerHTML = `<img class="g4-visual-img" src="${q.instrument.img}" alt="樂器圖片" loading="lazy">`;
+            visualEl.innerHTML = g4InstImgHtml(q.instrument, 'g4-visual-img', '樂器圖片');
         } else if (q.type === 'sound-source') {
             questionEl.textContent = `「${q.instrument.nameZh}」靠甚麼方式發聲？`;
-            visualEl.innerHTML = `<img class="g4-visual-img" src="${q.instrument.img}" alt="樂器圖片" loading="lazy">`;
+            visualEl.innerHTML = g4InstImgHtml(q.instrument, 'g4-visual-img', '樂器圖片');
         }
 
         // Render options
@@ -9404,6 +9464,7 @@
                 optEl.appendChild(btn);
             });
         }
+        g4BindSpins(visualEl);
     }
 
     function handleG4Answer(chosen, correct, btn, q) {
@@ -9430,7 +9491,7 @@
             const comboBonus = Math.floor(g4State.combo / 5) * 2;
             const pts = 10 + comboBonus;
             g4State.score += pts;
-            document.getElementById('g4Message').textContent = `✅ 答對了！+${pts}分`;
+            document.getElementById('g4Message').textContent = `✅ 回答正確。+${pts}分`;
             audio.playEffect('countdown');
         } else {
             g4State.counts.wrong++;
@@ -9450,7 +9511,9 @@
                 if (frame) { const iframe = frame.querySelector('iframe'); if (iframe) iframe.src = ''; }
                 const visualEl2 = document.getElementById('g4Visual');
                 if (visualEl2 && q.instrument.img) {
-                    visualEl2.innerHTML = `<img class="g4-visual-img" src="${q.instrument.img}" alt="${q.instrument.nameZh}" loading="lazy">`;
+                    g4ClearSpins(visualEl2);
+                    visualEl2.innerHTML = g4InstImgHtml(q.instrument, 'g4-visual-img', q.instrument.nameZh);
+                    g4BindSpins(visualEl2);
                 } else if (visualEl2) {
                     visualEl2.innerHTML = `<div class="g4-visual-hint" style="font-size:1.1rem;font-weight:700;">${q.instrument.nameZh}<br><span style="font-size:0.85rem;font-weight:400;color:var(--text-light)">${q.instrument.nameEn}</span></div>`;
                 }
@@ -9521,7 +9584,7 @@
         // Weakness
         document.getElementById('g4Weakness').innerHTML = counts.wrong === 0
             ? '<div>🌟 全部答對！你是樂器識辨小專家！🎉</div>'
-            : `<div>繼續練習加油！正確 ${counts.correct}/${totalAnswered} 題。</div>`;
+            : `<div>請繼續練習。正確 ${counts.correct}/${totalAnswered} 題。</div>`;
 
         // Mistake review
         const mistakeEl = document.getElementById('g4MistakeReview');
@@ -9585,7 +9648,7 @@
                 <div class="g4-study-name">${inst.nameZh}</div>
                 <div class="g4-study-en">${inst.nameEn}</div>
                 <div class="g4-study-desc">${inst.desc}</div>
-                <button class="g4-study-listen" data-id="${inst.id}" data-name="${inst.nameZh}">🔊 讀音</button>
+                <button class="g4-study-listen" data-id="${inst.id}" data-name="${inst.nameEn}">🔊 讀音</button>
             </div>
         `}).join('');
 
@@ -9594,9 +9657,9 @@
             const listenBtn = e.target.closest('.g4-study-listen');
             if (listenBtn) {
                 e.stopPropagation();
-                const instrName = listenBtn.dataset.name || INSTRUMENT_MAP?.get(listenBtn.dataset.id)?.nameZh || listenBtn.dataset.id;
+                const instrName = listenBtn.dataset.name || INSTRUMENT_MAP?.get(listenBtn.dataset.id)?.nameEn || listenBtn.dataset.id;
                 const utt = new SpeechSynthesisUtterance(instrName);
-                utt.lang = 'zh-HK';
+                utt.lang = 'en-US';
                 speechSynthesis.cancel();
                 speechSynthesis.speak(utt);
                 listenBtn.textContent = '🔊 讀音中…';
@@ -9663,7 +9726,7 @@
 
         const isCard = inst.img && inst.img.includes('/cards/');
         const imgHtml = inst.img
-            ? `<img src="${inst.img}" alt="${inst.nameEn}" class="g4-modal-img${isCard ? ' card-img' : ''}">`
+            ? g4InstImgHtml(inst, `g4-modal-img${isCard ? ' card-img' : ''}`, inst.nameEn)
             : `<div class="g4-modal-img-placeholder">🎵</div>`;
 
         const structData = INSTRUMENT_STRUCTURE[inst.id] || [];
@@ -9745,6 +9808,7 @@
 
         document.body.appendChild(modal);
         document.body.style.overflow = 'hidden';
+        g4BindSpins(modal);
 
         // Single delegated click handler for modal
         modal.onclick = (e) => {
@@ -9757,8 +9821,8 @@
             }
             if (e.target.closest('.g4-modal-listen')) {
                 const lb = e.target.closest('.g4-modal-listen');
-                const utt = new SpeechSynthesisUtterance(inst.nameZh);
-                utt.lang = 'zh-HK';
+                const utt = new SpeechSynthesisUtterance(inst.nameEn);
+                utt.lang = 'en-US';
                 speechSynthesis.cancel();
                 speechSynthesis.speak(utt);
                 lb.textContent = '🔊 讀音中…';
@@ -9862,6 +9926,36 @@
         const hint = lb.querySelector('#g4StructHint');
         let activeIdx = -1;
         let dragMode = false;
+        const frames = g4SpinFrames(inst);
+        let frameIdx = 0;
+        if (frames) {
+            const body = lb.querySelector('.g4-struct-lb-body');
+            body.classList.add('is-spin');
+            frames.forEach(src => { const pre = new Image(); pre.src = src; });
+            let rotDrag = false, rotX = 0, rotI = 0;
+            const showFrame = (n) => {
+                frameIdx = ((n % frames.length) + frames.length) % frames.length;
+                img.src = frames[frameIdx];
+                overlay.classList.toggle('is-back', frameIdx !== 0);
+            };
+            body.addEventListener('pointerdown', (e) => {
+                if (dragMode) return;
+                if (e.target.closest('.g4-anno-dot-wrap, .g4-anno-label-abs, .g4-struct-lb-close')) return;
+                rotDrag = true;
+                rotX = e.clientX;
+                rotI = frameIdx;
+                body.classList.add('is-drag');
+                try { body.setPointerCapture(e.pointerId); } catch (err) {}
+            });
+            body.addEventListener('pointermove', (e) => {
+                if (!rotDrag) return;
+                showFrame(rotI + Math.round((e.clientX - rotX) / 18));
+            });
+            const endRot = () => { rotDrag = false; body.classList.remove('is-drag'); };
+            body.addEventListener('pointerup', endRot);
+            body.addEventListener('pointercancel', endRot);
+            hint.textContent = '左右拖動可以轉一圈 · 回到正面先顯示部件 · 按 ESC 關閉';
+        }
 
         function focusPart(idx) {
             if (dragMode) return;
@@ -10038,8 +10132,9 @@
             });
         }
 
-        if (img.complete && img.naturalWidth) buildOverlay();
-        else img.addEventListener('load', buildOverlay);
+        const onImgReady = () => { if (!overlay.childElementCount) buildOverlay(); };
+        if (img.complete && img.naturalWidth) onImgReady();
+        else img.addEventListener('load', onImgReady, { once: true });
 
         function closeLb() {
             lb.style.animation = 'g4ModalBgIn 0.18s ease reverse both';
@@ -10069,6 +10164,7 @@
     function closeInstrumentDetail() {
         const modal = document.getElementById('g4InstrumentModal');
         if (!modal) return;
+        g4ClearSpins(modal);
         // Stop YouTube video
         const iframe = modal.querySelector('iframe');
         if (iframe) iframe.src = '';

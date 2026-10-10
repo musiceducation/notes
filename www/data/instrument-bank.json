@@ -5,7 +5,17 @@
     "nameEn": "Violin",
     "family": "strings",
     "familyZh": "弦樂",
-    "img": "https://raw.githubusercontent.com/kennethchan6392-hash/notes/main/img/instruments/violin.jpg",
+    "img": "img/instruments/violin-spin-0.jpg",
+    "frames": [
+      "img/instruments/violin-spin-0.jpg",
+      "img/instruments/violin-spin-1.jpg",
+      "img/instruments/violin-spin-2.jpg",
+      "img/instruments/violin-spin-3.jpg",
+      "img/instruments/violin-spin-4.jpg",
+      "img/instruments/violin-spin-5.jpg",
+      "img/instruments/violin-spin-6.jpg",
+      "img/instruments/violin-spin-7.jpg"
+    ],
     "desc": "弦樂家族中音域最高的樂器",
     "history": "小提琴誕生於16世紀的意大利北部，由製琴師安德烈亞·阿馬蒂奠定基礎形制。克里蒙納城成為製琴聖地，斯特拉迪瓦里和瓜奈里·德·耶穌所製作的名琴至今仍是無價之寶，部分估值超過一億港元。小提琴有四根弦，調音為G-D-A-E，是管弦樂團中數量最多的樂器，佔據第一及第二小提琴聲部。著名作曲家帕格尼尼以超技炫技改變了小提琴演奏的可能性，而巴赫的《無伴奏奏鳴曲與組曲》至今仍是最高難度的獨奏曲目之一。",
     "video": "https://www.youtube.com/embed/Di0oB_KtqoY",

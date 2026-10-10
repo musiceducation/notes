@@ -1427,6 +1427,7 @@
     // 介面切換系統
     // ==========================================
     function switchScreen(screenId) {
+        if (screenId === 'screen-composition-studio' && document.getElementById('enterCompositionStudio')?.hidden) return;
         if (isAppShell() && (screenId === 'screen-hub' || screenId === 'screen-app-home')) {
             screenId = 'screen-app-root';
         }
@@ -4216,6 +4217,7 @@
 
         const enterCompositionStudioEl = document.getElementById('enterCompositionStudio');
         enterCompositionStudioEl?.addEventListener('click', () => {
+            if (enterCompositionStudioEl.hidden) return;
             if (!requireHubLogin(hubNameField)) return;
             const user = getHubUser();
             state.currentUser = { name: user.name, grade: user.grade || 0, class: user.class || '', id: user.seat || '' };
@@ -4384,8 +4386,9 @@
 
         document.querySelectorAll('.app-game-row[data-launch]').forEach((row) => {
             row.addEventListener('click', () => {
+                if (row.hidden) return;
                 const target = document.getElementById(row.dataset.launch);
-                if (target) target.click();
+                if (target && !target.hidden) target.click();
             });
         });
 
